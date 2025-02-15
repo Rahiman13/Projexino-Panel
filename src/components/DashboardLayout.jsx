@@ -64,9 +64,10 @@ const DashboardLayout = () => {
   const menuItems = [
     { text: 'Dashboard', icon: <DashboardIcon />, path: '/dashboard' },
     // { text: 'Users', icon: <PeopleIcon />, path: '/dashboard/users' },
+    { text: 'Subscribers', icon: <PeopleIcon />, path: '/dashboard/subscribers' },
     { text: 'Blogs', icon: <ArticleIcon />, path: '/dashboard/blogs' },
     { text: 'Newsletter', icon: <MailIcon />, path: '/dashboard/newsletter' },
-    { text: 'Subscribers', icon: <PeopleIcon />, path: '/dashboard/subscribers' },
+    { text: 'Team', icon: <PeopleIcon />, path: '/dashboard/team' },
   ];
 
   const handleLogout = () => {

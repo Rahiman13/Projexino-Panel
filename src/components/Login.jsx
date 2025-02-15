@@ -40,6 +40,7 @@ const Login = () => {
             if (response.ok) {
                 const data = await response.json();
                 localStorage.setItem('token', data.token);
+                localStorage.setItem('role', data.user.role);
                 toast.success('Login successful');
                 navigate('/dashboard');
             } else {

@@ -14,6 +14,7 @@ import Newsletter from './components/Newsletter';
 import ProtectedRoute from './components/ProtectedRoute';
 import Blogs from './components/Blogs';
 import Subscribers from './components/Subscribers';
+import Team from './components/Team';
 
 function App() {
   return (
@@ -37,6 +38,7 @@ function App() {
           <Route path="subscribers" element={<Subscribers />} />
           {/* <Route path="blogs" element={<Blogs />} /> */}
           <Route path="blogs" element={<Blogs />} />
+          <Route path="team" element={<Team />} />
         </Route>
 
         {/* Redirect root to dashboard or login */}
