@@ -763,68 +763,9 @@ const Dashboard = () => {
         <Grid item xs={12} md={8}>
           <Paper sx={{ 
             p: 3, 
-            height: '100%',
-            borderRadius: '24px',
-            background: isDarkMode 
-              ? 'rgba(25, 35, 77, 0.8)'
-              : 'rgba(255, 255, 255, 0.9)',
-            backdropFilter: 'blur(12px)',
-            border: `1px solid ${isDarkMode ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)'}`,
-            transition: 'all 0.3s ease',
-            '&:hover': {
-              transform: 'translateY(-5px)',
-              boxShadow: isDarkMode
-                ? '0 12px 40px rgba(0,0,0,0.3)'
-                : '0 12px 40px rgba(43, 90, 158, 0.15)',
-            }
-          }}>
-            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 2 }}>
-              <Typography variant="h5" sx={{ fontWeight: 600, color: isDarkMode ? '#fff' : '#19234d' }}>
-                Blogs Overview
-              </Typography>
-              <YearSelector 
-                selectedYear={blogsYear} 
-                onChange={handleBlogsYearChange}
-                isDarkMode={isDarkMode}
-              />
-            </Box>
-            <ResponsiveContainer width="100%" height={350}>
-              <AreaChart data={monthlyData}>
-                <defs>
-                  <linearGradient id="colorBlogs" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor={isDarkMode ? "#d9764a" : "#2D3748"} stopOpacity={0.8}/>
-                    <stop offset="95%" stopColor={isDarkMode ? "#d9764a" : "#2D3748"} stopOpacity={0}/>
-                  </linearGradient>
-                </defs>
-                <CartesianGrid strokeDasharray="3 3" stroke={isDarkMode ? "#2A3A5A" : "#E2E8F0"} />
-                <XAxis dataKey="name" stroke={isDarkMode ? "#A0AEC0" : "#718096"} />
-                <YAxis stroke={isDarkMode ? "#A0AEC0" : "#718096"} />
-                <Tooltip 
-                  contentStyle={{ 
-                    background: isDarkMode ? 'rgba(25, 35, 77, 0.9)' : 'rgba(255, 255, 255, 0.9)',
-                    border: 'none',
-                    borderRadius: '8px',
-                    boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
-                    color: isDarkMode ? '#fff' : '#000'
-                  }}
-                />
-                <Area 
-                  type="monotone" 
-                  dataKey="blogs" 
-                  stroke={isDarkMode ? "#d9764a" : "#2D3748"} 
-                  fillOpacity={1} 
-                  fill="url(#colorBlogs)" 
-                />
-              </AreaChart>
-            </ResponsiveContainer>
-          </Paper>
-        </Grid>
-
-        {/* Recent Subscribers Section */}
-        <Grid item xs={12} md={4}>
-          <Paper sx={{ 
-            p: 3, 
-            height: '100%',
+            height: '420px',
+            display: 'flex',
+            flexDirection: 'column',
             borderRadius: '24px',
             background: isDarkMode 
               ? 'rgba(25, 35, 77, 0.8)'
@@ -833,100 +774,200 @@ const Dashboard = () => {
             boxShadow: isDarkMode
               ? '0 8px 32px 0 rgba(0, 0, 0, 0.3), inset 0 0 32px 0 rgba(255, 255, 255, 0.02)'
               : '0 8px 32px 0 rgba(31, 38, 135, 0.15), inset 0 0 32px 0 rgba(255, 255, 255, 0.2)',
-            '& .MuiListItem-root': {
-              borderRadius: '16px',
-              margin: '8px 0',
-              transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
-              '&:hover': {
-                backgroundColor: isDarkMode 
-                  ? 'rgba(217, 118, 74, 0.15)'
-                  : 'rgba(43, 90, 158, 0.08)',
-                transform: 'translateX(8px) scale(1.02)',
-              }
-            },
-            '& .MuiAvatar-root': {
-              transition: 'all 0.3s ease',
-              '&:hover': {
-                transform: 'scale(1.1) rotate(5deg)'
-              }
-            }
           }}>
-            <Typography variant="h5" gutterBottom sx={{ 
-              fontWeight: 600,
-              color: isDarkMode ? '#fff' : '#19234d'
+            <Box sx={{ 
+              display: 'flex', 
+              alignItems: 'center', 
+              justifyContent: 'space-between', 
+              mb: 3,
+              minHeight: '40px' // Ensures consistent spacing
             }}>
+              <Typography 
+                variant="h5" 
+                sx={{ 
+                  fontWeight: 600, 
+                  color: isDarkMode ? '#fff' : '#19234d' 
+                }}
+              >
+                Blogs Overview
+              </Typography>
+              <YearSelector 
+                selectedYear={blogsYear} 
+                onChange={handleBlogsYearChange}
+                isDarkMode={isDarkMode}
+              />
+            </Box>
+            <Box sx={{ flex: 1, minHeight: 0 }}>
+              <ResponsiveContainer width="100%" height={350}>
+                <AreaChart data={monthlyData}>
+                  <defs>
+                    <linearGradient id="colorBlogs" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="5%" stopColor={isDarkMode ? "#d9764a" : "#2D3748"} stopOpacity={0.8}/>
+                      <stop offset="95%" stopColor={isDarkMode ? "#d9764a" : "#2D3748"} stopOpacity={0}/>
+                    </linearGradient>
+                  </defs>
+                  <CartesianGrid strokeDasharray="3 3" stroke={isDarkMode ? "#2A3A5A" : "#E2E8F0"} />
+                  <XAxis dataKey="name" stroke={isDarkMode ? "#A0AEC0" : "#718096"} />
+                  <YAxis stroke={isDarkMode ? "#A0AEC0" : "#718096"} />
+                  <Tooltip 
+                    contentStyle={{ 
+                      background: isDarkMode ? 'rgba(25, 35, 77, 0.9)' : 'rgba(255, 255, 255, 0.9)',
+                      border: 'none',
+                      borderRadius: '8px',
+                      boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
+                      color: isDarkMode ? '#fff' : '#000'
+                    }}
+                  />
+                  <Area 
+                    type="monotone" 
+                    dataKey="blogs" 
+                    stroke={isDarkMode ? "#d9764a" : "#2D3748"} 
+                    fillOpacity={1} 
+                    fill="url(#colorBlogs)" 
+                  />
+                </AreaChart>
+              </ResponsiveContainer>
+            </Box>
+          </Paper>
+        </Grid>
+
+        {/* Recent Subscribers Section */}
+        <Grid item xs={12} md={4}>
+          <Paper sx={{ 
+            p: 3, 
+            height: '420px',
+            display: 'flex',
+            flexDirection: 'column',
+            borderRadius: '24px',
+            background: isDarkMode 
+              ? 'rgba(25, 35, 77, 0.8)'
+              : 'rgba(255, 255, 255, 0.9)',
+            backdropFilter: 'blur(12px)',
+            boxShadow: isDarkMode
+              ? '0 8px 32px 0 rgba(0, 0, 0, 0.3), inset 0 0 32px 0 rgba(255, 255, 255, 0.02)'
+              : '0 8px 32px 0 rgba(31, 38, 135, 0.15), inset 0 0 32px 0 rgba(255, 255, 255, 0.2)',
+          }}>
+            <Typography 
+              variant="h5" 
+              gutterBottom 
+              sx={{ 
+                fontWeight: 600,
+                color: isDarkMode ? '#fff' : '#19234d',
+                pb: 2
+              }}
+            >
               Recent Subscribers
             </Typography>
-            <List>
-              {recentSubscribers.map((activity) => (
-                <ListItem
-                  key={activity.id}
-                  component="div"
-                  sx={{
-                    transition: 'all 0.3s ease',
-                    borderRadius: '16px',
-                    '&:hover': {
-                      backgroundColor: isDarkMode 
-                        ? 'rgba(217, 118, 74, 0.15)'
-                        : 'rgba(43, 90, 158, 0.08)',
-                      transform: 'translateX(8px)',
-                    }
-                  }}
-                >
-                  <ListItemAvatar>
-                    <Avatar sx={{ 
-                      background: isDarkMode
-                        ? 'linear-gradient(135deg, #d9764a 0%, #2b5a9e 100%)'
-                        : 'linear-gradient(135deg, #4C51BF 0%, #38B2AC 100%)',
-                      fontSize: '1.2rem'
-                    }}>
-                      {activity.avatar}
-                    </Avatar>
-                  </ListItemAvatar>
-                  <ListItemText
-                    primary={
-                      <Typography variant="subtitle1" sx={{ 
-                        fontWeight: 600,
-                        color: isDarkMode ? '#fff' : '#19234d'
+            <Box 
+              sx={{ 
+                overflow: 'auto',
+                flex: 1,
+                '&::-webkit-scrollbar': {
+                  width: '4px',
+                },
+                '&::-webkit-scrollbar-track': {
+                  background: isDarkMode ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.05)',
+                  borderRadius: '4px',
+                },
+                '&::-webkit-scrollbar-thumb': {
+                  background: isDarkMode ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)',
+                  borderRadius: '4px',
+                  '&:hover': {
+                    background: isDarkMode ? 'rgba(255,255,255,0.2)' : 'rgba(0,0,0,0.2)',
+                  }
+                }
+              }}
+            >
+              <List sx={{ width: '95%' }}>
+                {recentSubscribers.map((activity) => (
+                  <ListItem
+                    key={activity.id}
+                    component="div"
+                    sx={{
+                      transition: 'all 0.3s ease',
+                      borderRadius: '16px',
+                      width: '100%',
+                      pr: 2,
+                      '&:hover': {
+                        backgroundColor: isDarkMode 
+                          ? 'rgba(217, 118, 74, 0.15)'
+                          : 'rgba(43, 90, 158, 0.08)',
+                        transform: 'translateX(8px) scale(1.02)',
+                      }
+                    }}
+                  >
+                    <ListItemAvatar>
+                      <Avatar sx={{ 
+                        background: isDarkMode
+                          ? 'linear-gradient(135deg, #d9764a 0%, #2b5a9e 100%)'
+                          : 'linear-gradient(135deg, #4C51BF 0%, #38B2AC 100%)',
+                        fontSize: '1.2rem'
                       }}>
-                        {activity.user}
-                      </Typography>
-                    }
-                    secondary={
-                      <>
+                        {activity.avatar}
+                      </Avatar>
+                    </ListItemAvatar>
+                    <ListItemText
+                      primary={
                         <Typography 
-                          component="span" 
-                          variant="body2" 
+                          variant="subtitle1" 
                           sx={{ 
-                            color: isDarkMode ? '#A0AEC0' : '#4A5568'
+                            fontWeight: 600,
+                            color: isDarkMode ? '#fff' : '#19234d',
+                            whiteSpace: 'nowrap',
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis'
                           }}
                         >
-                          {activity.action}
+                          {activity.user}
                         </Typography>
-                        <br />
-                        <Typography 
-                          component="span" 
-                          variant="caption" 
-                          sx={{ 
-                            color: isDarkMode ? '#718096' : '#718096'
-                          }}
-                        >
-                          {activity.time}
-                        </Typography>
-                      </>
-                    }
-                  />
-                </ListItem>
-              ))}
-            </List>
+                      }
+                      secondary={
+                        <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+                          <Typography 
+                            component="span" 
+                            variant="body2" 
+                            sx={{ 
+                              color: isDarkMode ? '#A0AEC0' : '#4A5568',
+                              whiteSpace: 'nowrap',
+                              overflow: 'hidden',
+                              textOverflow: 'ellipsis'
+                            }}
+                          >
+                            {activity.action}
+                          </Typography>
+                          <Typography 
+                            component="span" 
+                            variant="caption" 
+                            sx={{ 
+                              color: isDarkMode ? '#718096' : '#718096'
+                            }}
+                          >
+                            {activity.time}
+                          </Typography>
+                        </Box>
+                      }
+                      sx={{
+                        minWidth: 0, // This ensures text truncation works properly
+                        '& .MuiListItemText-primary': {
+                          width: '100%'
+                        },
+                        '& .MuiListItemText-secondary': {
+                          width: '100%'
+                        }
+                      }}
+                    />
+                  </ListItem>
+                ))}
+              </List>
+            </Box>
           </Paper>
         </Grid>
 
         {/* Bottom Charts Section */}
-        <Grid item xs={12} md={4} mt={6}>
+        <Grid item xs={12} md={4} mt={2}>
           <DonutChart data={stats.totalSubscribers} isDarkMode={isDarkMode} />
         </Grid>
-        <Grid item xs={12} md={8} mt={6}>
+        <Grid item xs={12} md={8} mt={2}>
           <NewsletterChart 
             data={newsletterData} 
             isDarkMode={isDarkMode} 
