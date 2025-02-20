@@ -18,6 +18,8 @@ import {
   MenuOpen as MenuOpenIcon,
   Dashboard as DashboardIcon,
   People as PeopleIcon,
+  Phone as PhoneIcon,
+  Work as WorkIcon,
   Article as ArticleIcon,
   Mail as MailIcon,
   Logout as LogoutIcon,
@@ -68,6 +70,8 @@ const DashboardLayout = () => {
     { text: 'Blogs', icon: <ArticleIcon />, path: '/dashboard/blogs' },
     { text: 'Newsletter', icon: <MailIcon />, path: '/dashboard/newsletter' },
     { text: 'Team', icon: <PeopleIcon />, path: '/dashboard/team' },
+    { text: 'Careers', icon: <WorkIcon />, path: '/dashboard/careers' },
+    { text: 'Contacts', icon: <PhoneIcon />, path: '/dashboard/contacts' },
   ];
 
   const handleLogout = () => {

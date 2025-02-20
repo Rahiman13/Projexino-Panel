@@ -15,6 +15,8 @@ import ProtectedRoute from './components/ProtectedRoute';
 import Blogs from './components/Blogs';
 import Subscribers from './components/Subscribers';
 import Team from './components/Team';
+import Careers from './components/Careers';
+import Contacts from './components/Contacts';
 
 function App() {
   return (
@@ -39,6 +41,8 @@ function App() {
           {/* <Route path="blogs" element={<Blogs />} /> */}
           <Route path="blogs" element={<Blogs />} />
           <Route path="team" element={<Team />} />
+          <Route path="careers" element={<Careers />} />
+          <Route path="contacts" element={<Contacts />} />
         </Route>
 
         {/* Redirect root to dashboard or login */}

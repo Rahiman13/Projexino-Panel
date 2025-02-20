@@ -144,7 +144,7 @@ const Teams = () => {
 
     const fetchTeams = async () => {
         try {
-            const response = await fetch(`${baseUrl}/api/users`, {
+            const response = await fetch(`${baseUrl}/api/admin/users`, {
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem('token')}`
                 }
@@ -384,7 +384,9 @@ const Teams = () => {
                                     <TableCell sx={{ color: isDarkMode ? '#fff' : '#19234d' }}>Email</TableCell>
                                     <TableCell sx={{ color: isDarkMode ? '#fff' : '#19234d' }}>Role</TableCell>
                                     <TableCell sx={{ color: isDarkMode ? '#fff' : '#19234d' }}>Joined Date</TableCell>
-                                    <TableCell sx={{ color: isDarkMode ? '#fff' : '#19234d' }}>Actions</TableCell>
+                                    {localStorage.getItem('role') === 'Admin' && (
+                                        <TableCell sx={{ color: isDarkMode ? '#fff' : '#19234d' }}>Actions</TableCell>
+                                    )}
                                 </TableRow>
                             </TableHead>
                             <TableBody>
