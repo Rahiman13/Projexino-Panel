@@ -393,14 +393,6 @@ const ContentBlock = ({ block, index, onChange, onDelete, isDarkMode }) => {
   );
 };
 
-const cleanTag = (tag) => {
-  if (!tag) return '';
-  return tag
-    .replace(/[\[\]"'\\]/g, '') // Remove brackets, quotes, and backslashes
-    .trim() // Remove leading/trailing whitespace
-    .replace(/\s+/g, ' '); // Replace multiple spaces with single space
-};
-
 const Blogs = () => {
   const { isDarkMode } = useTheme();
   const navigate = useNavigate();
@@ -514,39 +506,23 @@ const Blogs = () => {
   const handleEdit = (blog) => {
     setIsEditing(true);
     
-    // Parse content if it's a string
+    // Parse content if it's a string or ensure it's properly structured
     let parsedContent;
     try {
       parsedContent = Array.isArray(blog.content) 
         ? blog.content
         : typeof blog.content === 'string'
-          ? JSON.parse(blog.content)
-          : [{ type: 'paragraph', text: blog.content || '' }];
-
-      // Ensure proper structure for list items
-      parsedContent = parsedContent.map(block => {
-        if (block.type === 'list' && !Array.isArray(block.items)) {
-          return {
-            ...block,
-            items: block.text ? block.text.split('\n').filter(Boolean) : []
-          };
-        }
-        return block;
-      });
+          ? [{ type: 'paragraph', text: blog.content }]
+          : [];
     } catch (error) {
       console.error('Error parsing content:', error);
-      parsedContent = [{ type: 'paragraph', text: blog.content || '' }];
+      parsedContent = [];
     }
 
     setFormData({
       ...blog,
       content: parsedContent,
-      tags: Array.isArray(blog.tags) ? blog.tags : [],
-      seoMetadata: blog.seoMetadata || {
-        metaTitle: '',
-        metaDescription: '',
-        keywords: []
-      }
+      // ... rest of your formData setup
     });
     setAuthorImagePreview(blog.authorImage || '');
     setFeaturedImagePreview(blog.featuredImage || '');
@@ -556,29 +532,13 @@ const Blogs = () => {
   const handleCreate = () => {
     setIsEditing(false);
     setFormData({
-      title: '',
-      slug: '',
+      ...formData,
       content: [{
         type: 'paragraph',
         text: '',
-        level: 1
-      }],
-      authorName: '',
-      authorImage: null,
-      category: '',
-      featuredImage: null,
-      status: 'Draft',
-      visibility: 'Public',
-      excerpt: '',
-      tags: [],
-      seoMetadata: {
-        metaTitle: '',
-        metaDescription: '',
-        keywords: []
-      }
+        level: 1 // Default level for headings
+      }]
     });
-    setAuthorImagePreview('');
-    setFeaturedImagePreview('');
     setOpenDialog(true);
   };
 
@@ -601,19 +561,18 @@ const Blogs = () => {
     }
     
     return content.every(block => {
-      if (!block.type) return false;
+      if (!block.type || !block.text) return false;
       
       switch (block.type) {
         case 'heading':
-          return typeof block.text === 'string' && 
-                 (!block.level || (block.level >= 1 && block.level <= 6));
+          return block.level >= 1 && block.level <= 6;
         case 'list':
-          return block.items || (typeof block.text === 'string' && block.text.length > 0);
+          return Array.isArray(block.items) || block.text.split('\n').length > 0;
         case 'code':
-          return typeof block.text === 'string';
+          return block.text && (!block.language || typeof block.language === 'string');
         case 'quote':
         case 'paragraph':
-          return typeof block.text === 'string';
+          return typeof block.text === 'string' && block.text.length > 0;
         default:
           return false;
       }
@@ -628,46 +587,42 @@ const Blogs = () => {
       }
       
       setIsSubmitting(true);
-      if (!formData.title || !formData.authorName || !formData.category) {
+      if (!formData.title || !formData.content || !formData.authorName || !formData.category) {
         throw new Error('Please fill in all required fields');
       }
 
       const formDataToSend = new FormData();
       
-      // Format content blocks according to backend structure
+      // Format content blocks - ensure proper structure
       const formattedContent = formData.content.map(block => {
         const baseBlock = {
           type: block.type,
           text: block.text
         };
 
+        // Add additional properties based on block type
         switch (block.type) {
           case 'heading':
             return {
               ...baseBlock,
-              level: Math.min(Math.max(block.level || 1, 1), 6)
-            };
-          case 'list':
-            return {
-              type: 'list',
-              items: Array.isArray(block.items) 
-                ? block.items 
-                : block.text.split('\n').filter(Boolean)
+              level: block.level || 1
             };
           case 'code':
             return {
               ...baseBlock,
-              language: block.language || 'plaintext'
+              language: block.language || 'javascript'
             };
-          case 'quote':
-          case 'paragraph':
-            return baseBlock;
+          case 'list':
+            return {
+              ...baseBlock,
+              items: Array.isArray(block.items) ? block.items : block.text.split('\n').filter(Boolean)
+            };
           default:
-            return null;
+            return baseBlock;
         }
-      }).filter(block => block !== null);
+      });
 
-      // Append all fields
+      // Append basic fields
       formDataToSend.append('title', formData.title);
       formDataToSend.append('slug', formData.slug);
       formDataToSend.append('content', JSON.stringify(formattedContent));
@@ -675,8 +630,8 @@ const Blogs = () => {
       formDataToSend.append('category', formData.category);
       formDataToSend.append('status', formData.status);
       formDataToSend.append('visibility', formData.visibility);
-      formDataToSend.append('excerpt', formData.excerpt || '');
-      formDataToSend.append('tags', JSON.stringify(formData.tags.map(cleanTag)));
+      formDataToSend.append('excerpt', formData.excerpt);
+      formDataToSend.append('tags', JSON.stringify(formData.tags));
       formDataToSend.append('seoMetadata', JSON.stringify(formData.seoMetadata));
 
       // Handle files
@@ -1043,27 +998,34 @@ const Blogs = () => {
                         </Typography>
                         <TagsContainer isDarkMode={isDarkMode}>
                           {Array.isArray(blog.tags) && blog.tags.length > 0 ? (
-                            blog.tags.map((tag, index) => (
-                              <StyledTagChip
-                                key={index}
-                                label={cleanTag(tag)}
-                                variant="primary"
-                                size="small"
-                                isDarkMode={isDarkMode}
-                                icon={
-                                  <Box
-                                    component="span"
-                                    sx={{
-                                      width: '6px',
-                                      height: '6px',
-                                      borderRadius: '50%',
-                                      background: isDarkMode ? '#d9764a' : '#2b5a9e',
-                                      marginLeft: '8px'
-                                    }}
-                                  />
-                                }
-                              />
-                            ))
+                            blog.tags.flatMap((tag, index) => {
+                              // Split the tag by commas and clean each part
+                              const tagParts = typeof tag === 'string' 
+                                ? tag.split(',').map(t => t.replace(/[\[\]"]/g, '').trim()).filter(Boolean)
+                                : [tag];
+
+                              return tagParts.map((t, i) => (
+                                <StyledTagChip
+                                  key={`${index}-${i}`}
+                                  label={t}
+                                  variant="primary"
+                                  size="small"
+                                  isDarkMode={isDarkMode}
+                                  icon={
+                                    <Box
+                                      component="span"
+                                      sx={{
+                                        width: '6px',
+                                        height: '6px',
+                                        borderRadius: '50%',
+                                        background: isDarkMode ? '#d9764a' : '#2b5a9e',
+                                        marginLeft: '8px'
+                                      }}
+                                    />
+                                  }
+                                />
+                              ));
+                            })
                           ) : (
                             <Typography variant="caption" sx={{ 
                               color: isDarkMode ? 'rgba(255,255,255,0.6)' : 'rgba(0,0,0,0.6)',
@@ -1355,9 +1317,10 @@ const Blogs = () => {
                 value={formData.currentTag || ''}
                 onChange={(e) => {
                   const value = e.target.value;
+                  // Remove any commas and split into array if comma is found
                   if (value.includes(',')) {
                     const newTags = value.split(',')
-                      .map(tag => cleanTag(tag))
+                      .map(tag => tag.trim())
                       .filter(tag => tag && !formData.tags.includes(tag));
                     
                     setFormData({
@@ -1392,7 +1355,7 @@ const Blogs = () => {
                 {Array.isArray(formData.tags) && formData.tags.map((tag, index) => (
                   <StyledTagChip
                     key={index}
-                    label={cleanTag(tag)}
+                    label={tag.trim()} // Ensure no extra spaces
                     variant="primary"
                     size="small"
                     isDarkMode={isDarkMode}
@@ -1638,7 +1601,7 @@ const Blogs = () => {
                 {formData.seoMetadata.keywords.map((keyword, index) => (
                   <StyledTagChip
                     key={index}
-                    label={cleanTag(keyword)}
+                    label={keyword}
                     variant="secondary"
                     onDelete={() => {
                       setFormData({

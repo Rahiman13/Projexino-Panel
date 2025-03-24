@@ -109,6 +109,7 @@ const Contacts = () => {
                     'Authorization': `Bearer ${localStorage.getItem('token')}`
                 }
             });
+            if (!response.ok) throw new Error('Unauthorized');
             const data = await response.json();
             setContacts(data);
             setLoading(false);
@@ -116,6 +117,7 @@ const Contacts = () => {
             console.error('Error fetching contacts:', error);
             toast.error('Failed to fetch contacts');
             setLoading(false);
+            setContacts([]);
         }
     };
 
@@ -126,6 +128,7 @@ const Contacts = () => {
                     'Authorization': `Bearer ${localStorage.getItem('token')}`
                 }
             });
+            if (!response.ok) throw new Error('Unauthorized');
             const data = await response.json();
             setStats(data);
         } catch (error) {
@@ -165,10 +168,11 @@ const Contacts = () => {
             // Update stats
             setStats(prev => ({
                 ...prev,
-                seen: prev.seen + 1,
-                unseen: prev.unseen - 1
+                seen: prev.seen ,
+                unseen: prev.unseen
             }));
 
+            fetchStats();
             toast.success('Contact marked as seen');
         } catch (error) {
             console.error('Error marking contact as seen:', error);
@@ -182,11 +186,11 @@ const Contacts = () => {
                 {/* Metrics */}
                 <Grid item xs={12} my={3}>
                     <Grid container spacing={3}>
-                        <Grid item xs={12} md={4}>
+                        <Grid item xs={12} sm={6} md={4}>
                             <StyledMetricCard isDarkMode={isDarkMode}>
                                 <BackgroundGlow color={isDarkMode ? '#2196f3' : '#1976d2'} />
                                 <Box sx={{ position: 'relative', zIndex: 1 }}>
-                                    <Box sx={{ display: 'flex', gap: 4, alignItems: 'flex-start' }}>
+                                    <Box sx={{ display: 'flex', gap: 2, alignItems: 'flex-start' }}>
                                         <MetricIcon color={['#2196f3', '#1976d2']}>
                                             <EmailIcon />
                                         </MetricIcon>
@@ -198,17 +202,15 @@ const Contacts = () => {
                                                 Total Contacts
                                             </Typography>
                                         </Box>
-
                                     </Box>
                                 </Box>
                             </StyledMetricCard>
                         </Grid>
-
-                        <Grid item xs={12} md={4}>
+                        <Grid item xs={12} sm={6} md={4}>
                             <StyledMetricCard isDarkMode={isDarkMode}>
                                 <BackgroundGlow color={isDarkMode ? '#4caf50' : '#388e3c'} />
                                 <Box sx={{ position: 'relative', zIndex: 1 }}>
-                                    <Box sx={{ display: 'flex', gap: 4, alignItems: 'flex-start' }}>
+                                    <Box sx={{ display: 'flex', gap: 2, alignItems: 'flex-start' }}>
                                         <MetricIcon color={['#4caf50', '#388e3c']}>
                                             <VisibilityIcon />
                                         </MetricIcon>
@@ -220,17 +222,15 @@ const Contacts = () => {
                                                 Seen Messages
                                             </Typography>
                                         </Box>
-
                                     </Box>
                                 </Box>
                             </StyledMetricCard>
                         </Grid>
-
-                        <Grid item xs={12} md={4}>
+                        <Grid item xs={12} sm={6} md={4}>
                             <StyledMetricCard isDarkMode={isDarkMode}>
                                 <BackgroundGlow color={isDarkMode ? '#f44336' : '#d32f2f'} />
                                 <Box sx={{ position: 'relative', zIndex: 1 }}>
-                                    <Box sx={{ display: 'flex', gap: 4, alignItems: 'flex-start' }}>
+                                    <Box sx={{ display: 'flex', gap: 2, alignItems: 'flex-start' }}>
                                         <MetricIcon color={['#f44336', '#d32f2f']}>
                                             <VisibilityOffIcon />
                                         </MetricIcon>
@@ -242,7 +242,6 @@ const Contacts = () => {
                                                 Unseen Messages
                                             </Typography>
                                         </Box>
-
                                     </Box>
                                 </Box>
                             </StyledMetricCard>
@@ -257,6 +256,7 @@ const Contacts = () => {
                         sx={{
                             borderRadius: '20px',
                             backgroundColor: isDarkMode ? '#151b3b' : '#fff',
+                            overflowX: 'auto',
                             '& .MuiTableCell-root': {
                                 color: isDarkMode ? '#fff' : '#19234d',
                                 borderBottom: `1px solid ${isDarkMode ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)'}`,
@@ -272,90 +272,74 @@ const Contacts = () => {
                                 <CircularProgress />
                             </Box>
                         ) : (
-                            <>
-                                <Table>
-                                    <TableHead>
-                                        <TableRow>
-                                            <TableCell>Name</TableCell>
-                                            <TableCell>Email</TableCell>
-                                            <TableCell>Message</TableCell>
-                                            <TableCell>Status</TableCell>
-                                            <TableCell>Created At</TableCell>
-                                            <TableCell>Seen At</TableCell>
-                                            <TableCell align="center">Action</TableCell>
-                                        </TableRow>
-                                    </TableHead>
-                                    <TableBody>
-                                        {contacts
-                                            .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                                            .map((contact) => (
-                                                <TableRow
-                                                    key={contact._id}
+                            <Table>
+                                <TableHead>
+                                    <TableRow>
+                                        <TableCell>Name</TableCell>
+                                        <TableCell>Email</TableCell>
+                                        <TableCell>Message</TableCell>
+                                        <TableCell>Status</TableCell>
+                                        <TableCell>Created At</TableCell>
+                                        <TableCell>Seen At</TableCell>
+                                        <TableCell align="center">Action</TableCell>
+                                    </TableRow>
+                                </TableHead>
+                                <TableBody>
+                                    {Array.isArray(contacts) && contacts.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((contact) => (
+                                        <TableRow
+                                            key={contact._id}
+                                            sx={{
+                                                color: isDarkMode ? '#fff' : '#19234d',
+                                                '&:hover': {
+                                                    backgroundColor: isDarkMode
+                                                        ? 'rgba(217, 118, 74, 0.1)'
+                                                        : 'rgba(43, 90, 158, 0.05)',
+                                                }
+                                            }}
+                                        >
+                                            <TableCell>{contact.name}</TableCell>
+                                            <TableCell>{contact.email}</TableCell>
+                                            <TableCell>{contact.message}</TableCell>
+                                            <TableCell>
+                                                <Chip
+                                                    icon={contact.status === 'Seen' ? <CheckCircleIcon /> : <EyeIcon />}
+                                                    label={contact.status}
+                                                    color={contact.status === 'Seen' ? 'success' : 'warning'}
+                                                    size="small"
                                                     sx={{
-                                                        color: isDarkMode ? '#fff' : '#19234d',
-                                                        '&:hover': {
-                                                            backgroundColor: isDarkMode
-                                                                ? 'rgba(217, 118, 74, 0.1)'
-                                                                : 'rgba(43, 90, 158, 0.05)',
-                                                        }
+                                                        backgroundColor: contact.status === 'Seen'
+                                                            ? isDarkMode ? 'rgba(76, 175, 80, 0.2)' : undefined
+                                                            : isDarkMode ? 'rgba(255, 152, 0, 0.2)' : undefined,
                                                     }}
-                                                >
-                                                    <TableCell>{contact.name}</TableCell>
-                                                    <TableCell>{contact.email}</TableCell>
-                                                    <TableCell>{contact.message}</TableCell>
-                                                    <TableCell>
-                                                        <Chip
-                                                            icon={contact.status === 'Seen' ? <CheckCircleIcon /> : <EyeIcon />}
-                                                            label={contact.status}
-                                                            color={contact.status === 'Seen' ? 'success' : 'warning'}
-                                                            size="small"
+                                                />
+                                            </TableCell>
+                                            <TableCell>{formatDate(contact.createdAt)}</TableCell>
+                                            <TableCell>
+                                                {contact.seenAt ? formatDate(contact.seenAt) : 'Not seen yet'}
+                                            </TableCell>
+                                            <TableCell align="center">
+                                                {contact.status !== 'Seen' && (
+                                                    <Tooltip title="Mark as Seen">
+                                                        <IconButton
+                                                            onClick={() => handleMarkAsSeen(contact._id)}
                                                             sx={{
-                                                                backgroundColor: contact.status === 'Seen'
-                                                                    ? isDarkMode ? 'rgba(76, 175, 80, 0.2)' : undefined
-                                                                    : isDarkMode ? 'rgba(255, 152, 0, 0.2)' : undefined,
+                                                                color: isDarkMode ? '#4caf50' : '#388e3c',
+                                                                '&:hover': {
+                                                                    backgroundColor: isDarkMode
+                                                                        ? 'rgba(76, 175, 80, 0.2)'
+                                                                        : 'rgba(76, 175, 80, 0.1)',
+                                                                }
                                                             }}
-                                                        />
-                                                    </TableCell>
-                                                    <TableCell>{formatDate(contact.createdAt)}</TableCell>
-                                                    <TableCell>
-                                                        {contact.seenAt ? formatDate(contact.seenAt) : 'Not seen yet'}
-                                                    </TableCell>
-                                                    <TableCell align="center">
-                                                        {contact.status !== 'Seen' && (
-                                                            <Tooltip title="Mark as Seen">
-                                                                <IconButton
-                                                                    onClick={() => handleMarkAsSeen(contact._id)}
-                                                                    sx={{
-                                                                        color: isDarkMode ? '#4caf50' : '#388e3c',
-                                                                        '&:hover': {
-                                                                            backgroundColor: isDarkMode
-                                                                                ? 'rgba(76, 175, 80, 0.2)'
-                                                                                : 'rgba(76, 175, 80, 0.1)',
-                                                                        }
-                                                                    }}
-                                                                >
-                                                                    <VisibilityIcon />
-                                                                </IconButton>
-                                                            </Tooltip>
-                                                        )}
-                                                    </TableCell>
-                                                </TableRow>
-                                            ))}
-                                    </TableBody>
-                                </Table>
-                                <TablePagination
-                                    sx={{
-                                        color: isDarkMode ? '#fff' : '#19234d',
-                                    }}
-                                    rowsPerPageOptions={[5, 10, 25]}
-                                    component="div"
-                                    count={contacts.length}
-                                    rowsPerPage={rowsPerPage}
-                                    page={page}
-                                    onPageChange={handleChangePage}
-                                    onRowsPerPageChange={handleChangeRowsPerPage}
-                                />
-                            </>
+                                                        >
+                                                            <VisibilityIcon />
+                                                        </IconButton>
+                                                    </Tooltip>
+                                                )}
+                                            </TableCell>
+                                        </TableRow>
+                                    ))}
+                                </TableBody>
+                            </Table>
                         )}
                     </TableContainer>
                 </Grid>

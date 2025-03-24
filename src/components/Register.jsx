@@ -7,9 +7,12 @@ import {
   Paper,
   Typography,
   Container,
-  Box
+  Box,
+  InputAdornment,
+  IconButton,
 } from '@mui/material';
 import { Link, useNavigate } from 'react-router-dom';
+import { Visibility, VisibilityOff } from '@mui/icons-material';
 import baseUrl from '../api'
 import AuthLayout from './AuthLayout';
 import { toast } from 'react-toastify';
@@ -18,22 +21,28 @@ const validationSchema = Yup.object({
   name: Yup.string().required('Name is required'),
   email: Yup.string()
     .email('Invalid email format')
-    .matches(/@projexino\.com$/, 'Email must be from @projexino.com domain')
+    .matches(/@projexino\.com$/, 'Wrong email address')
     .required('Email is required'),
   password: Yup.string()
     .min(8, 'Password must be at least 8 characters')
     .required('Password is required'),
+  confirmPassword: Yup.string()
+    .oneOf([Yup.ref('password'), null], 'Passwords must match')
+    .required('Confirm password is required'),
 });
 
 const Register = () => {
     const navigate = useNavigate();
+    const [showPassword, setShowPassword] = useState(false);
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
     const handleSubmit = async (values, { setSubmitting }) => {
         try {
+          const { confirmPassword, ...submitData } = values;
           const response = await fetch(`${baseUrl}/api/users/register`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(values),
+            body: JSON.stringify(submitData),
           });
           
           if (response.ok) {
@@ -56,7 +65,7 @@ const Register = () => {
       subtitle="Join our platform and start your journey"
     >
       <Formik
-        initialValues={{ name: '', email: '', password: '' }}
+        initialValues={{ name: '', email: '', password: '', confirmPassword: '' }}
         validationSchema={validationSchema}
         onSubmit={handleSubmit}
       >
@@ -87,11 +96,46 @@ const Register = () => {
               margin="normal"
               name="password"
               label="Password"
-              type="password"
+              type={showPassword ? 'text' : 'password'}
               value={values.password}
               onChange={handleChange}
               error={touched.password && Boolean(errors.password)}
               helperText={touched.password && errors.password}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton
+                      onClick={() => setShowPassword(!showPassword)}
+                      edge="end"
+                    >
+                      {showPassword ? <VisibilityOff /> : <Visibility />}
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
+            />
+            <TextField
+              fullWidth
+              margin="normal"
+              name="confirmPassword"
+              label="Confirm Password"
+              type={showConfirmPassword ? 'text' : 'password'}
+              value={values.confirmPassword}
+              onChange={handleChange}
+              error={touched.confirmPassword && Boolean(errors.confirmPassword)}
+              helperText={touched.confirmPassword && errors.confirmPassword}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton
+                      onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                      edge="end"
+                    >
+                      {showConfirmPassword ? <VisibilityOff /> : <Visibility />}
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
             />
             <Button
               type="submit"

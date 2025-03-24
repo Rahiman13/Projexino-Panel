@@ -11,6 +11,7 @@ import {
   Dialog,
   DialogTitle,
   DialogContent,
+  IconButton,
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
@@ -20,6 +21,8 @@ import { styled } from '@mui/material/styles';
 import LockResetIcon from '@mui/icons-material/LockReset';
 import TimerIcon from '@mui/icons-material/Timer';
 import CircularProgress from '@mui/material/CircularProgress';
+import { Visibility, VisibilityOff } from '@mui/icons-material';
+import InputAdornment from '@mui/material/InputAdornment';
 
 const validationSchema = Yup.object({
   email: Yup.string()
@@ -164,6 +167,8 @@ const ForgotPassword = () => {
   const [timeLeft, setTimeLeft] = useState(300); // 5 minutes in seconds
   const [canResend, setCanResend] = useState(false);
   const [isResending, setIsResending] = useState(false);
+  const [showNewPassword, setShowNewPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   useEffect(() => {
     let timer;
@@ -309,7 +314,7 @@ const ForgotPassword = () => {
                   }}
                 />
               ) : (
-                'Send Reset Link'
+                'Send OTP'
               )}
             </Button>
             <Box textAlign="center">
@@ -367,22 +372,46 @@ const ForgotPassword = () => {
                   margin="normal"
                   name="newPassword"
                   label="New Password"
-                  type="password"
+                  type={showNewPassword ? 'text' : 'password'}
                   value={values.newPassword}
                   onChange={handleChange}
                   error={touched.newPassword && Boolean(errors.newPassword)}
                   helperText={touched.newPassword && errors.newPassword}
+                  InputProps={{
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <IconButton
+                          onClick={() => setShowNewPassword(!showNewPassword)}
+                          edge="end"
+                        >
+                          {showNewPassword ? <VisibilityOff /> : <Visibility />}
+                        </IconButton>
+                      </InputAdornment>
+                    ),
+                  }}
                 />
                 <StyledTextField
                   fullWidth
                   margin="normal"
                   name="confirmPassword"
                   label="Confirm Password"
-                  type="password"
+                  type={showConfirmPassword ? 'text' : 'password'}
                   value={values.confirmPassword}
                   onChange={handleChange}
                   error={touched.confirmPassword && Boolean(errors.confirmPassword)}
                   helperText={touched.confirmPassword && errors.confirmPassword}
+                  InputProps={{
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <IconButton
+                          onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                          edge="end"
+                        >
+                          {showConfirmPassword ? <VisibilityOff /> : <Visibility />}
+                        </IconButton>
+                      </InputAdornment>
+                    ),
+                  }}
                 />
                 <Box sx={{ mt: 4, display: 'flex', flexDirection: 'column', gap: 2 }}>
                   <Button
