@@ -272,7 +272,7 @@ const StyledFeaturedSection = styled(Box)(({ theme, isDarkMode }) => ({
   padding: '16px',
   marginBottom: '16px',
   borderRadius: '12px',
-  background: isDarkMode
+  background: isDarkMode 
     ? 'linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.07) 100%)'
     : 'linear-gradient(135deg, rgba(0, 0, 0, 0.02) 0%, rgba(0, 0, 0, 0.04) 100%)',
   border: `1px solid ${isDarkMode ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)'}`,
@@ -282,7 +282,7 @@ const StyledFAQSection = styled(Box)(({ theme, isDarkMode }) => ({
   padding: '16px',
   marginBottom: '16px',
   borderRadius: '12px',
-  background: isDarkMode
+  background: isDarkMode 
     ? 'linear-gradient(135deg, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0.05) 100%)'
     : 'linear-gradient(135deg, rgba(0, 0, 0, 0.01) 0%, rgba(0, 0, 0, 0.03) 100%)',
   border: `1px solid ${isDarkMode ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)'}`,
@@ -534,15 +534,16 @@ const Blogs = () => {
     imageAltText: '',
     status: 'Draft',
     visibility: 'Public',
+    publishedDate: '',
+    // updatedDate: '',
+    readingTime: '',
     excerpt: '',
     tags: [],
-    currentTag: '', // Add this
     seoMetadata: {
       metaTitle: '',
       metaDescription: '',
-      keywords: [],
+      keywords: []
     },
-    currentKeyword: '', // Add this
     breadcrumb: [],
     livePageUrl: '',
     topViewed: false,
@@ -551,8 +552,6 @@ const Blogs = () => {
     audio: '',
     featuredSections: [],
     faqs: [],
-    readingTime: 0, // Add this
-    isFeatured: false, // Add this
   });
 
   const [authorImagePreview, setAuthorImagePreview] = useState('');
@@ -665,7 +664,6 @@ const Blogs = () => {
       parsedContent = [{ type: 'paragraph', text: blog.content || '' }];
     }
 
-    // Set form data with all fields, including the new ones
     setFormData({
       ...blog,
       content: parsedContent,
@@ -686,25 +684,15 @@ const Blogs = () => {
       tags: blog.tags || [],
       status: blog.status || 'Draft',
       visibility: blog.visibility || 'Public',
-      excerpt: blog.excerpt || '',
-      isFeatured: blog.isFeatured || false,
-      publishedDate: blog.publishedDate || '',
-      updatedDate: blog.updatedDate || '',
-      readingTime: blog.readingTime || ''
+      excerpt: blog.excerpt || ''
     });
-
-    // Set image previews if they exist
-    if (blog.authorImage) {
-      setAuthorImagePreview(blog.authorImage);
-    }
-    if (blog.featuredImage) {
-      setFeaturedImagePreview(blog.featuredImage);
-    }
-
+    
+    setAuthorImagePreview(blog.authorImage || '');
+    setFeaturedImagePreview(blog.featuredImage || '');
     setOpenDialog(true);
   };
 
-  const handleCreateBlog = () => {
+  const handleCreate = () => {
     setIsEditing(false);
     setFormData({
       title: '',
@@ -719,10 +707,6 @@ const Blogs = () => {
       visibility: 'Public',
       excerpt: '',
       tags: [],
-      publishedDate: '',
-      updatedDate: '',
-      readingTime: 0,
-      isFeatured: false,
       seoMetadata: {
         metaTitle: '',
         metaDescription: '',
@@ -782,69 +766,88 @@ const Blogs = () => {
 
   const handleSubmit = async (e) => {
     if (e) e.preventDefault();
+    setIsSubmitting(true);
+
     try {
       if (!validateContent(formData.content)) {
         toast.error('Please ensure all content blocks are properly formatted');
         return;
       }
 
-      setIsSubmitting(true);
       if (!formData.title || !formData.authorName || !formData.category) {
         throw new Error('Please fill in all required fields');
       }
 
       const formDataToSend = new FormData();
 
-      // Format content blocks
+      // Format content blocks according to backend structure
       const formattedContent = formData.content.map(block => {
-        const baseBlock = { type: block.type };
+        const baseBlock = {
+          type: block.type,
+          text: block.text
+        };
 
-        if (block.text) baseBlock.text = block.text;
-        if (block.level) baseBlock.level = block.level;
-        if (block.language) baseBlock.language = block.language;
-
-        if (block.type === 'list') {
-          baseBlock.items = Array.isArray(block.items)
-            ? block.items
-            : block.text?.split('\n').filter(Boolean) || [];
+        switch (block.type) {
+          case 'heading':
+            return {
+              ...baseBlock,
+              level: Math.min(Math.max(block.level || 1, 1), 6)
+            };
+          case 'list':
+            return {
+              type: 'list',
+              items: Array.isArray(block.items)
+                ? block.items
+                : block.text.split('\n').filter(Boolean)
+            };
+          case 'code':
+            return {
+              ...baseBlock,
+              language: block.language || 'plaintext'
+            };
+          case 'quote':
+          case 'paragraph':
+            return baseBlock;
+          default:
+            return null;
         }
+      }).filter(block => block !== null);
 
-        return baseBlock;
-      });
+      // Add basic fields
+      formDataToSend.append('title', formData.title);
+      formDataToSend.append('slug', formData.slug);
+      formDataToSend.append('authorName', formData.authorName);
+      formDataToSend.append('category', formData.category);
+      formDataToSend.append('status', formData.status);
+      formDataToSend.append('visibility', formData.visibility);
+      formDataToSend.append('excerpt', formData.excerpt);
+      formDataToSend.append('content', JSON.stringify(formattedContent));
+      formDataToSend.append('tags', JSON.stringify(formData.tags));
+      formDataToSend.append('readingTime', JSON.stringify(formData.readingTime));
+      formDataToSend.append('publishedDate', JSON.stringify(formData.publishedDate));
+      // formDataToSend.append('updatedDate', JSON.stringify(formData.updatedDate));
 
-      // Add all fields to formData
-      const fields = {
-        title: formData.title,
-        slug: formData.slug || formData.title.toLowerCase().replace(/\s+/g, '-'),
-        content: JSON.stringify(formattedContent),
-        authorName: formData.authorName,
-        category: formData.category,
-        status: formData.status,
-        visibility: formData.visibility,
-        excerpt: formData.excerpt,
-        tags: formData.tags.join(','),
-        imageAltText: formData.imageAltText,
-        breadcrumb: formData.breadcrumb.join(','),
-        livePageUrl: formData.livePageUrl,
-        topViewed: formData.topViewed,
-        recentlyPublished: formData.recentlyPublished,
-        tocBasedOn: formData.tocBasedOn,
-        audio: formData.audio,
-        featuredSections: JSON.stringify(formData.featuredSections),
-        faqs: JSON.stringify(formData.faqs),
-        readingTime: formData.readingTime,
-        isFeatured: formData.isFeatured,
-        seoMetadata: JSON.stringify({
-          metaTitle: formData.seoMetadata.metaTitle,
-          metaDescription: formData.seoMetadata.metaDescription,
-          keywords: formData.seoMetadata.keywords
-        })
-      };
+      // Add new fields
+      formDataToSend.append('imageAltText', formData.imageAltText);
+      formDataToSend.append('breadcrumb', JSON.stringify(formData.breadcrumb));
+      formDataToSend.append('livePageUrl', formData.livePageUrl);
+      formDataToSend.append('topViewed', formData.topViewed);
+      formDataToSend.append('recentlyPublished', formData.recentlyPublished);
+      formDataToSend.append('tocBasedOn', formData.tocBasedOn);
+      formDataToSend.append('audio', formData.audio);
+      formDataToSend.append('featuredSections', JSON.stringify(formData.featuredSections.map(section => ({
+        heading: section.heading,
+        description: section.description,
+        image: section.image
+      }))));
+      formDataToSend.append('faqs', JSON.stringify(formData.faqs));
 
-      // Append all fields to FormData
-      Object.entries(fields).forEach(([key, value]) => {
-        formDataToSend.append(key, value);
-      });
+      // Add SEO metadata
+      formDataToSend.append('seoMetadata', JSON.stringify({
+        metaTitle: formData.seoMetadata.metaTitle,
+        metaDescription: formData.seoMetadata.metaDescription,
+        keywords: formData.seoMetadata.keywords
+      }));
 
       // Handle file uploads
       if (formData.authorImage instanceof File) {
@@ -853,6 +856,13 @@ const Blogs = () => {
       if (formData.featuredImage instanceof File) {
         formDataToSend.append('featuredImage', formData.featuredImage);
       }
+
+      // Handle featured section images
+      formData.featuredSections.forEach((section, index) => {
+        if (section.image instanceof File) {
+          formDataToSend.append(`featuredSectionImage_${index}`, section.image);
+        }
+      });
 
       const url = isEditing
         ? `${baseUrl}/api/blogs/${formData._id}`
@@ -867,14 +877,15 @@ const Blogs = () => {
       });
 
       if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error || 'Failed to save blog');
+        throw new Error('Failed to save blog');
       }
 
-      toast.success(`Blog ${isEditing ? 'updated' : 'created'} successfully!`);
+      toast.success(isEditing ? 'Blog updated successfully!' : 'Blog created successfully!');
       setOpenDialog(false);
       fetchBlogs();
-      resetForm();
+      
+      setAuthorImagePreview('');
+      setFeaturedImagePreview('');
     } catch (error) {
       console.error('Error saving blog:', error);
       toast.error(error.message || 'Failed to save blog');
@@ -883,49 +894,12 @@ const Blogs = () => {
     }
   };
 
-  // Add this helper function
-  const resetForm = () => {
-    setFormData({
-      title: '',
-      slug: '',
-      content: [{ type: 'paragraph', text: '' }],
-      authorName: '',
-      authorImage: null,
-      category: '',
-      featuredImage: null,
-      imageAltText: '',
-      status: 'Draft',
-      visibility: 'Public',
-      excerpt: '',
-      tags: [],
-      currentTag: '',
-      seoMetadata: {
-        metaTitle: '',
-        metaDescription: '',
-        keywords: [],
-      },
-      currentKeyword: '',
-      breadcrumb: [],
-      livePageUrl: '',
-      topViewed: false,
-      recentlyPublished: false,
-      tocBasedOn: 'heading',
-      audio: '',
-      featuredSections: [],
-      faqs: [],
-      readingTime: 0,
-      isFeatured: false,
-    });
-    setAuthorImagePreview('');
-    setFeaturedImagePreview('');
-  };
-
   const filteredBlogs = blogs?.filter(blog => {
     if (!blog) return false;
     const matchesSearch =
       (blog.title?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        blog.slug?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        blog.category?.toLowerCase().includes(searchTerm.toLowerCase())) ?? false;
+      blog.slug?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      blog.category?.toLowerCase().includes(searchTerm.toLowerCase())) ?? false;
 
     const matchesCategory = selectedCategory === 'all' || blog.category === selectedCategory;
 
@@ -1063,7 +1037,7 @@ const Blogs = () => {
             <CreateButton
               isDarkMode={isDarkMode}
               startIcon={<AddIcon />}
-              onClick={handleCreateBlog}
+              onClick={handleCreate}
               endIcon={<TipIcon sx={{ animation: 'pulse 2s infinite' }} />}
             >
               Create New Blog
@@ -1624,85 +1598,6 @@ const Blogs = () => {
             </Grid>
 
             <Grid item xs={12}>
-              <StyledTextField
-                fullWidth
-                label="Breadcrumb (comma-separated)"
-                value={Array.isArray(formData.breadcrumb) ? formData.breadcrumb.join(', ') : ''}
-                onChange={(e) => setFormData({
-                  ...formData,
-                  breadcrumb: e.target.value.split(',').map(item => item.trim()).filter(Boolean)
-                })}
-                isDarkMode={isDarkMode}
-              />
-            </Grid>
-
-            <Grid item xs={12}>
-              <Typography variant="subtitle1" sx={{
-                mb: 1,
-                color: isDarkMode ? '#fff' : '#19234d',
-                fontWeight: 500
-              }}>
-                Bread Crumb
-              </Typography>
-              <StyledTextField
-                fullWidth
-                placeholder="Add bread crumb (press Enter or comma to add)"
-                value={formData.currentBreadCrumb || ''}
-                onChange={(e) => {
-                  const value = e.target.value;
-                  if (value.includes(',')) {
-                    const newBreadCrumbs = value.split(',')
-                      .map(breadcrumb => cleanTag(breadcrumb))
-                      .filter(breadcrumb => breadcrumb && !formData.breadcrumb.includes(breadcrumb));
-
-                    setFormData({
-                      ...formData,
-                      currentBreadCrumb: '',
-                      breadcrumb: [...formData.breadcrumb, ...newBreadCrumbs]
-                    });
-                  } else {
-                    setFormData({
-                      ...formData,
-                      currentBreadCrumb: value
-                    });
-                  }
-                }}
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter' && formData.currentBreadCrumb.trim()) {
-                    e.preventDefault();
-                    const newBreadCrumbs = formData.currentBreadCrumb.trim();
-                    if (!formData.breadcrumb.includes(newBreadCrumbs)) {
-                      setFormData({
-                        ...formData,
-                        currentBreadCrumb: '',
-                        breadcrumb: [...formData.breadcrumb, newBreadCrumbs]
-                      });
-                    }
-                  }
-                }}
-                isDarkMode={isDarkMode}
-                sx={{ mb: 1 }}
-              />
-              <StyledChipContainer isDarkMode={isDarkMode}>
-                {Array.isArray(formData.breadcrumb) && formData.breadcrumb.map((breadcrumb, index) => (
-                  <StyledTagChip
-                    key={index}
-                    label={cleanTag(breadcrumb)}
-                    variant="primary"
-                    size="small"
-                    isDarkMode={isDarkMode}
-                    onDelete={() => {
-                      setFormData({
-                        ...formData,
-                        breadcrumb: formData.breadcrumb.filter((_, i) => i !== index)
-                      });
-                    }}
-                  />
-                ))}
-              </StyledChipContainer>
-            </Grid>
-
-            {/* <Grid item xs={12}>
               <Typography variant="h6" gutterBottom>
                 Featured Sections
               </Typography>
@@ -1735,7 +1630,7 @@ const Blogs = () => {
               >
                 Add Featured Section
               </Button>
-            </Grid> */}
+            </Grid>
 
             <Grid item xs={12}>
               <Typography variant="h6" gutterBottom>
@@ -1771,7 +1666,7 @@ const Blogs = () => {
                 Add FAQ
               </Button>
             </Grid>
-
+            
             <Grid item xs={12}>
               <Typography variant="subtitle1" sx={{
                 mb: 1,

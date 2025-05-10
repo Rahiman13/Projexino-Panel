@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import CircularProgress from '@mui/material/CircularProgress';
 import {
   Box,
   Grid,
@@ -66,14 +65,14 @@ const VisuallyHiddenInput = styled('input')`
 const StyledDialog = styled(Dialog)(({ theme, isDarkMode }) => ({
   '& .MuiDialog-paper': {
     borderRadius: '20px',
-    background: isDarkMode
+    background: isDarkMode 
       ? 'linear-gradient(135deg, rgba(25, 35, 77, 0.95) 0%, rgba(21, 27, 59, 0.95) 100%)'
       : 'linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(245, 247, 250, 0.95) 100%)',
     backdropFilter: 'blur(12px)',
-    boxShadow: isDarkMode
+    boxShadow: isDarkMode 
       ? '0 8px 32px rgba(0, 0, 0, 0.4)'
       : '0 8px 32px rgba(31, 38, 135, 0.15)',
-    border: isDarkMode
+    border: isDarkMode 
       ? '1px solid rgba(255, 255, 255, 0.1)'
       : '1px solid rgba(255, 255, 255, 0.4)',
   }
@@ -102,7 +101,7 @@ const StyledChip = styled(Chip)(({ theme, isDarkMode, category }) => ({
   borderRadius: '16px',
   padding: '0 12px',
   height: '28px',
-  background: category ?
+  background: category ? 
     (isDarkMode ? 'rgba(217, 118, 74, 0.15)' : 'rgba(43, 90, 158, 0.1)') :
     (isDarkMode ? 'rgba(255, 255, 255, 0.05)' : 'rgba(0, 0, 0, 0.05)'),
   color: category ?
@@ -130,17 +129,17 @@ const StyledTagChip = styled(Chip)(({ theme, isDarkMode, variant }) => ({
   height: variant === 'small' ? '24px' : '28px',
   padding: '0 12px',
   background: (() => {
-    switch (variant) {
+    switch(variant) {
       case 'primary':
-        return isDarkMode
+        return isDarkMode   
           ? 'linear-gradient(135deg, rgba(217, 118, 74, 0.15) 0%, rgba(222, 117, 39, 0.15) 100%)'
           : 'linear-gradient(135deg, rgba(43, 90, 158, 0.1) 0%, rgba(25, 35, 77, 0.1) 100%)';
       case 'secondary':
-        return isDarkMode
+        return isDarkMode 
           ? 'linear-gradient(135deg, rgba(156, 39, 176, 0.15) 0%, rgba(123, 31, 162, 0.15) 100%)'
           : 'linear-gradient(135deg, rgba(156, 39, 176, 0.1) 0%, rgba(123, 31, 162, 0.1) 100%)';
       default:
-        return isDarkMode
+        return isDarkMode 
           ? 'rgba(255, 255, 255, 0.05)'
           : 'rgba(0, 0, 0, 0.05)';
     }
@@ -148,7 +147,7 @@ const StyledTagChip = styled(Chip)(({ theme, isDarkMode, variant }) => ({
   backdropFilter: 'blur(8px)',
   border: `1px solid ${isDarkMode ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)'}`,
   color: (() => {
-    switch (variant) {
+    switch(variant) {
       case 'primary':
         return isDarkMode ? '#d9764a' : '#2b5a9e';
       case 'secondary':
@@ -162,21 +161,21 @@ const StyledTagChip = styled(Chip)(({ theme, isDarkMode, variant }) => ({
   transition: 'all 0.3s ease',
   '&:hover': {
     transform: 'translateY(-1px)',
-    boxShadow: isDarkMode
+    boxShadow: isDarkMode 
       ? '0 4px 12px rgba(0, 0, 0, 0.3)'
       : '0 4px 12px rgba(0, 0, 0, 0.1)',
     background: (() => {
-      switch (variant) {
+      switch(variant) {
         case 'primary':
-          return isDarkMode
+          return isDarkMode 
             ? 'linear-gradient(135deg, rgba(217, 118, 74, 0.25) 0%, rgba(222, 117, 39, 0.25) 100%)'
             : 'linear-gradient(135deg, rgba(43, 90, 158, 0.2) 0%, rgba(25, 35, 77, 0.2) 100%)';
         case 'secondary':
-          return isDarkMode
+          return isDarkMode 
             ? 'linear-gradient(135deg, rgba(156, 39, 176, 0.25) 0%, rgba(123, 31, 162, 0.25) 100%)'
             : 'linear-gradient(135deg, rgba(156, 39, 176, 0.2) 0%, rgba(123, 31, 162, 0.2) 100%)';
         default:
-          return isDarkMode
+          return isDarkMode 
             ? 'rgba(255, 255, 255, 0.1)'
             : 'rgba(0, 0, 0, 0.1)';
       }
@@ -201,14 +200,14 @@ const TagsContainer = styled(Box)(({ theme, isDarkMode }) => ({
   gap: '8px',
   padding: '12px',
   borderRadius: '16px',
-  background: isDarkMode
+  background: isDarkMode 
     ? 'linear-gradient(135deg, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0.05) 100%)'
     : 'linear-gradient(135deg, rgba(0, 0, 0, 0.02) 0%, rgba(0, 0, 0, 0.04) 100%)',
   backdropFilter: 'blur(8px)',
   border: `1px solid ${isDarkMode ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)'}`,
   transition: 'all 0.3s ease',
   '&:hover': {
-    boxShadow: isDarkMode
+    boxShadow: isDarkMode 
       ? '0 4px 20px rgba(0, 0, 0, 0.3)'
       : '0 4px 20px rgba(0, 0, 0, 0.1)',
   }
@@ -218,22 +217,22 @@ const StyledSearchBar = styled(TextField)(({ theme, isDarkMode }) => ({
   '& .MuiOutlinedInput-root': {
     borderRadius: '20px',
     color: isDarkMode ? '#fff' : '#19234d',
-    background: isDarkMode
+    background: isDarkMode 
       ? 'linear-gradient(135deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.07) 100%)'
       : 'linear-gradient(135deg, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0.95) 100%)',
     backdropFilter: 'blur(8px)',
     border: `1px solid ${isDarkMode ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)'}`,
     transition: 'all 0.3s ease',
     '&:hover': {
-      background: isDarkMode
+      background: isDarkMode 
         ? 'linear-gradient(135deg, rgba(255,255,255,0.07) 0%, rgba(255,255,255,0.09) 100%)'
         : 'linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(255,255,255,1) 100%)',
-      boxShadow: isDarkMode
+      boxShadow: isDarkMode 
         ? '0 4px 20px rgba(0,0,0,0.2)'
         : '0 4px 20px rgba(0,0,0,0.1)',
     },
     '&.Mui-focused': {
-      boxShadow: isDarkMode
+      boxShadow: isDarkMode 
         ? '0 4px 20px rgba(217, 118, 74, 0.2)'
         : '0 4px 20px rgba(43, 90, 158, 0.2)',
     }
@@ -268,26 +267,6 @@ const CreateButton = styled(Button)(({ theme, isDarkMode }) => ({
   }
 }));
 
-const StyledFeaturedSection = styled(Box)(({ theme, isDarkMode }) => ({
-  padding: '16px',
-  marginBottom: '16px',
-  borderRadius: '12px',
-  background: isDarkMode
-    ? 'linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.07) 100%)'
-    : 'linear-gradient(135deg, rgba(0, 0, 0, 0.02) 0%, rgba(0, 0, 0, 0.04) 100%)',
-  border: `1px solid ${isDarkMode ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)'}`,
-}));
-
-const StyledFAQSection = styled(Box)(({ theme, isDarkMode }) => ({
-  padding: '16px',
-  marginBottom: '16px',
-  borderRadius: '12px',
-  background: isDarkMode
-    ? 'linear-gradient(135deg, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0.05) 100%)'
-    : 'linear-gradient(135deg, rgba(0, 0, 0, 0.01) 0%, rgba(0, 0, 0, 0.03) 100%)',
-  border: `1px solid ${isDarkMode ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)'}`,
-}));
-
 const StyledPagination = styled(Pagination)(({ theme, isDarkMode }) => ({
   '& .MuiPaginationItem-root': {
     margin: '0 4px',
@@ -296,7 +275,7 @@ const StyledPagination = styled(Pagination)(({ theme, isDarkMode }) => ({
     fontSize: '0.95rem',
     color: isDarkMode ? 'rgba(255,255,255,0.7)' : 'rgba(0,0,0,0.7)',
     '&:hover': {
-      background: isDarkMode
+      background: isDarkMode 
         ? 'linear-gradient(135deg, rgba(217, 118, 74, 0.15) 0%, rgba(222, 117, 39, 0.15) 100%)'
         : 'linear-gradient(135deg, rgba(43, 90, 158, 0.1) 0%, rgba(25, 35, 77, 0.1) 100%)',
       transform: 'translateY(-2px)',
@@ -322,108 +301,16 @@ const StyledPagination = styled(Pagination)(({ theme, isDarkMode }) => ({
   },
   '& .MuiPaginationItem-previousNext': {
     padding: '8px',
-    background: isDarkMode
+    background: isDarkMode 
       ? 'rgba(255,255,255,0.05)'
       : 'rgba(0,0,0,0.05)',
     '&:hover': {
-      background: isDarkMode
+      background: isDarkMode 
         ? 'rgba(255,255,255,0.1)'
         : 'rgba(0,0,0,0.1)',
     }
   }
 }));
-
-const FeaturedSection = ({ section, index, onChange, onDelete, isDarkMode }) => {
-  return (
-    <StyledFeaturedSection isDarkMode={isDarkMode}>
-      <Grid container spacing={2}>
-        <Grid item xs={12}>
-          <StyledTextField
-            fullWidth
-            label="Heading"
-            value={section.heading || ''}
-            onChange={(e) => onChange(index, { ...section, heading: e.target.value })}
-            isDarkMode={isDarkMode}
-          />
-        </Grid>
-        <Grid item xs={12}>
-          <StyledTextField
-            fullWidth
-            multiline
-            rows={3}
-            label="Description"
-            value={section.description || ''}
-            onChange={(e) => onChange(index, { ...section, description: e.target.value })}
-            isDarkMode={isDarkMode}
-          />
-        </Grid>
-        <Grid item xs={12}>
-          <Button
-            component="label"
-            variant="outlined"
-            startIcon={<CloudUploadIcon />}
-            sx={{ marginRight: 2 }}
-          >
-            Upload Image
-            <VisuallyHiddenInput type="file" onChange={(e) => {
-              const file = e.target.files[0];
-              if (file) {
-                onChange(index, { ...section, image: file });
-              }
-            }} />
-          </Button>
-          <Button
-            variant="outlined"
-            color="error"
-            onClick={() => onDelete(index)}
-            startIcon={<DeleteIcon />}
-          >
-            Remove Section
-          </Button>
-        </Grid>
-      </Grid>
-    </StyledFeaturedSection>
-  );
-};
-
-const FAQSection = ({ faq, index, onChange, onDelete, isDarkMode }) => {
-  return (
-    <StyledFAQSection isDarkMode={isDarkMode}>
-      <Grid container spacing={2}>
-        <Grid item xs={12}>
-          <StyledTextField
-            fullWidth
-            label="Question"
-            value={faq.question || ''}
-            onChange={(e) => onChange(index, { ...faq, question: e.target.value })}
-            isDarkMode={isDarkMode}
-          />
-        </Grid>
-        <Grid item xs={12}>
-          <StyledTextField
-            fullWidth
-            multiline
-            rows={3}
-            label="Answer"
-            value={faq.answer || ''}
-            onChange={(e) => onChange(index, { ...faq, answer: e.target.value })}
-            isDarkMode={isDarkMode}
-          />
-        </Grid>
-        <Grid item xs={12}>
-          <Button
-            variant="outlined"
-            color="error"
-            onClick={() => onDelete(index)}
-            startIcon={<DeleteIcon />}
-          >
-            Remove FAQ
-          </Button>
-        </Grid>
-      </Grid>
-    </StyledFAQSection>
-  );
-};
 
 const ContentBlock = ({ block, index, onChange, onDelete, isDarkMode }) => {
   return (
@@ -471,8 +358,8 @@ const ContentBlock = ({ block, index, onChange, onDelete, isDarkMode }) => {
               rows={4}
               label="List Items (one per line)"
               value={Array.isArray(block.items) ? block.items.join('\n') : ''}
-              onChange={(e) => onChange(index, {
-                ...block,
+              onChange={(e) => onChange(index, { 
+                ...block, 
                 items: e.target.value.split('\n').filter(Boolean),
                 text: e.target.value // Also store in text for validation
               })}
@@ -531,30 +418,16 @@ const Blogs = () => {
     authorImage: null,
     category: '',
     featuredImage: null,
-    imageAltText: '',
     status: 'Draft',
     visibility: 'Public',
     excerpt: '',
     tags: [],
-    currentTag: '', // Add this
     seoMetadata: {
       metaTitle: '',
       metaDescription: '',
-      keywords: [],
-    },
-    currentKeyword: '', // Add this
-    breadcrumb: [],
-    livePageUrl: '',
-    topViewed: false,
-    recentlyPublished: false,
-    tocBasedOn: 'heading',
-    audio: '',
-    featuredSections: [],
-    faqs: [],
-    readingTime: 0, // Add this
-    isFeatured: false, // Add this
+      keywords: []
+    }
   });
-
   const [authorImagePreview, setAuthorImagePreview] = useState('');
   const [featuredImagePreview, setFeaturedImagePreview] = useState('');
   const [categories, setCategories] = useState([]);
@@ -568,7 +441,7 @@ const Blogs = () => {
   }, []);
 
   useEffect(() => {
-    if (blogs && blogs.length > 0) {
+    if (blogs.length > 0) {
       const uniqueCategories = [...new Set(blogs.map(blog => blog.category))];
       setCategories(uniqueCategories);
     }
@@ -640,11 +513,11 @@ const Blogs = () => {
 
   const handleEdit = (blog) => {
     setIsEditing(true);
-
+    
     // Parse content if it's a string
     let parsedContent;
     try {
-      parsedContent = Array.isArray(blog.content)
+      parsedContent = Array.isArray(blog.content) 
         ? blog.content
         : typeof blog.content === 'string'
           ? JSON.parse(blog.content)
@@ -665,77 +538,44 @@ const Blogs = () => {
       parsedContent = [{ type: 'paragraph', text: blog.content || '' }];
     }
 
-    // Set form data with all fields, including the new ones
     setFormData({
       ...blog,
       content: parsedContent,
-      featuredSections: blog.featuredSections || [],
-      faqs: blog.faqs || [],
-      breadcrumb: blog.breadcrumb || [],
-      seoMetadata: {
-        metaTitle: blog.seoMetadata?.metaTitle || '',
-        metaDescription: blog.seoMetadata?.metaDescription || '',
-        keywords: blog.seoMetadata?.keywords || []
-      },
-      imageAltText: blog.imageAltText || '',
-      livePageUrl: blog.livePageUrl || '',
-      topViewed: blog.topViewed || false,
-      recentlyPublished: blog.recentlyPublished || false,
-      tocBasedOn: blog.tocBasedOn || 'heading',
-      audio: blog.audio || '',
-      tags: blog.tags || [],
-      status: blog.status || 'Draft',
-      visibility: blog.visibility || 'Public',
-      excerpt: blog.excerpt || '',
-      isFeatured: blog.isFeatured || false,
-      publishedDate: blog.publishedDate || '',
-      updatedDate: blog.updatedDate || '',
-      readingTime: blog.readingTime || ''
+      tags: Array.isArray(blog.tags) ? blog.tags : [],
+      seoMetadata: blog.seoMetadata || {
+        metaTitle: '',
+        metaDescription: '',
+        keywords: []
+      }
     });
-
-    // Set image previews if they exist
-    if (blog.authorImage) {
-      setAuthorImagePreview(blog.authorImage);
-    }
-    if (blog.featuredImage) {
-      setFeaturedImagePreview(blog.featuredImage);
-    }
-
+    setAuthorImagePreview(blog.authorImage || '');
+    setFeaturedImagePreview(blog.featuredImage || '');
     setOpenDialog(true);
   };
 
-  const handleCreateBlog = () => {
+  const handleCreate = () => {
     setIsEditing(false);
     setFormData({
       title: '',
       slug: '',
-      content: [{ type: 'paragraph', text: '' }],
+      content: [{
+        type: 'paragraph',
+        text: '',
+        level: 1
+      }],
       authorName: '',
       authorImage: null,
       category: '',
       featuredImage: null,
-      imageAltText: '',
       status: 'Draft',
       visibility: 'Public',
       excerpt: '',
       tags: [],
-      publishedDate: '',
-      updatedDate: '',
-      readingTime: 0,
-      isFeatured: false,
       seoMetadata: {
         metaTitle: '',
         metaDescription: '',
         keywords: []
-      },
-      breadcrumb: [],
-      livePageUrl: '',
-      topViewed: false,
-      recentlyPublished: false,
-      tocBasedOn: 'heading',
-      audio: '',
-      featuredSections: [], // Initialize as empty array
-      faqs: [], // Initialize as empty array
+      }
     });
     setAuthorImagePreview('');
     setFeaturedImagePreview('');
@@ -759,14 +599,14 @@ const Blogs = () => {
     if (!Array.isArray(content) || content.length === 0) {
       return false;
     }
-
+    
     return content.every(block => {
       if (!block.type) return false;
-
+      
       switch (block.type) {
         case 'heading':
-          return typeof block.text === 'string' &&
-            (!block.level || (block.level >= 1 && block.level <= 6));
+          return typeof block.text === 'string' && 
+                 (!block.level || (block.level >= 1 && block.level <= 6));
         case 'list':
           return block.items || (typeof block.text === 'string' && block.text.length > 0);
         case 'code':
@@ -780,73 +620,66 @@ const Blogs = () => {
     });
   };
 
-  const handleSubmit = async (e) => {
-    if (e) e.preventDefault();
+  const handleSubmit = async () => {
     try {
       if (!validateContent(formData.content)) {
         toast.error('Please ensure all content blocks are properly formatted');
         return;
       }
-
+      
       setIsSubmitting(true);
       if (!formData.title || !formData.authorName || !formData.category) {
         throw new Error('Please fill in all required fields');
       }
 
       const formDataToSend = new FormData();
-
-      // Format content blocks
+      
+      // Format content blocks according to backend structure
       const formattedContent = formData.content.map(block => {
-        const baseBlock = { type: block.type };
+        const baseBlock = {
+          type: block.type,
+          text: block.text
+        };
 
-        if (block.text) baseBlock.text = block.text;
-        if (block.level) baseBlock.level = block.level;
-        if (block.language) baseBlock.language = block.language;
-
-        if (block.type === 'list') {
-          baseBlock.items = Array.isArray(block.items)
-            ? block.items
-            : block.text?.split('\n').filter(Boolean) || [];
+        switch (block.type) {
+          case 'heading':
+            return {
+              ...baseBlock,
+              level: Math.min(Math.max(block.level || 1, 1), 6)
+            };
+          case 'list':
+            return {
+              type: 'list',
+              items: Array.isArray(block.items) 
+                ? block.items 
+                : block.text.split('\n').filter(Boolean)
+            };
+          case 'code':
+            return {
+              ...baseBlock,
+              language: block.language || 'plaintext'
+            };
+          case 'quote':
+          case 'paragraph':
+            return baseBlock;
+          default:
+            return null;
         }
+      }).filter(block => block !== null);
 
-        return baseBlock;
-      });
+      // Append all fields
+      formDataToSend.append('title', formData.title);
+      formDataToSend.append('slug', formData.slug);
+      formDataToSend.append('content', JSON.stringify(formattedContent));
+      formDataToSend.append('authorName', formData.authorName);
+      formDataToSend.append('category', formData.category);
+      formDataToSend.append('status', formData.status);
+      formDataToSend.append('visibility', formData.visibility);
+      formDataToSend.append('excerpt', formData.excerpt || '');
+      formDataToSend.append('tags', JSON.stringify(formData.tags.map(cleanTag)));
+      formDataToSend.append('seoMetadata', JSON.stringify(formData.seoMetadata));
 
-      // Add all fields to formData
-      const fields = {
-        title: formData.title,
-        slug: formData.slug || formData.title.toLowerCase().replace(/\s+/g, '-'),
-        content: JSON.stringify(formattedContent),
-        authorName: formData.authorName,
-        category: formData.category,
-        status: formData.status,
-        visibility: formData.visibility,
-        excerpt: formData.excerpt,
-        tags: formData.tags.join(','),
-        imageAltText: formData.imageAltText,
-        breadcrumb: formData.breadcrumb.join(','),
-        livePageUrl: formData.livePageUrl,
-        topViewed: formData.topViewed,
-        recentlyPublished: formData.recentlyPublished,
-        tocBasedOn: formData.tocBasedOn,
-        audio: formData.audio,
-        featuredSections: JSON.stringify(formData.featuredSections),
-        faqs: JSON.stringify(formData.faqs),
-        readingTime: formData.readingTime,
-        isFeatured: formData.isFeatured,
-        seoMetadata: JSON.stringify({
-          metaTitle: formData.seoMetadata.metaTitle,
-          metaDescription: formData.seoMetadata.metaDescription,
-          keywords: formData.seoMetadata.keywords
-        })
-      };
-
-      // Append all fields to FormData
-      Object.entries(fields).forEach(([key, value]) => {
-        formDataToSend.append(key, value);
-      });
-
-      // Handle file uploads
+      // Handle files
       if (formData.authorImage instanceof File) {
         formDataToSend.append('authorImage', formData.authorImage);
       }
@@ -854,83 +687,45 @@ const Blogs = () => {
         formDataToSend.append('featuredImage', formData.featuredImage);
       }
 
-      const url = isEditing
-        ? `${baseUrl}/api/blogs/${formData._id}`
-        : `${baseUrl}/api/blogs`;
-
-      const response = await fetch(url, {
-        method: isEditing ? 'PUT' : 'POST',
-        headers: {
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
-        },
-        body: formDataToSend
-      });
+      const response = await fetch(
+        isEditing ? `${baseUrl}/api/blogs/${formData._id}` : `${baseUrl}/api/blogs`,
+        {
+          method: isEditing ? 'PUT' : 'POST',
+          headers: {
+            'Authorization': `Bearer ${localStorage.getItem('token')}`
+          },
+          body: formDataToSend
+        }
+      );
 
       if (!response.ok) {
         const errorData = await response.json();
         throw new Error(errorData.error || 'Failed to save blog');
       }
 
-      toast.success(`Blog ${isEditing ? 'updated' : 'created'} successfully!`);
+      toast.success(`Blog ${isEditing ? 'updated' : 'created'} successfully`);
       setOpenDialog(false);
       fetchBlogs();
-      resetForm();
+      
+      setAuthorImagePreview('');
+      setFeaturedImagePreview('');
     } catch (error) {
-      console.error('Error saving blog:', error);
-      toast.error(error.message || 'Failed to save blog');
+      toast.error(error.message);
     } finally {
       setIsSubmitting(false);
     }
   };
 
-  // Add this helper function
-  const resetForm = () => {
-    setFormData({
-      title: '',
-      slug: '',
-      content: [{ type: 'paragraph', text: '' }],
-      authorName: '',
-      authorImage: null,
-      category: '',
-      featuredImage: null,
-      imageAltText: '',
-      status: 'Draft',
-      visibility: 'Public',
-      excerpt: '',
-      tags: [],
-      currentTag: '',
-      seoMetadata: {
-        metaTitle: '',
-        metaDescription: '',
-        keywords: [],
-      },
-      currentKeyword: '',
-      breadcrumb: [],
-      livePageUrl: '',
-      topViewed: false,
-      recentlyPublished: false,
-      tocBasedOn: 'heading',
-      audio: '',
-      featuredSections: [],
-      faqs: [],
-      readingTime: 0,
-      isFeatured: false,
-    });
-    setAuthorImagePreview('');
-    setFeaturedImagePreview('');
-  };
-
-  const filteredBlogs = blogs?.filter(blog => {
-    if (!blog) return false;
-    const matchesSearch =
-      (blog.title?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        blog.slug?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        blog.category?.toLowerCase().includes(searchTerm.toLowerCase())) ?? false;
-
+  const filteredBlogs = blogs.filter(blog => {
+    const matchesSearch = 
+      blog.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      blog.slug.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      blog.category.toLowerCase().includes(searchTerm.toLowerCase());
+      
     const matchesCategory = selectedCategory === 'all' || blog.category === selectedCategory;
-
+    
     return matchesSearch && matchesCategory;
-  }) || [];
+  });
 
   const renderContentBlock = (block) => {
     switch (block.type) {
@@ -941,7 +736,7 @@ const Blogs = () => {
         return <Typography>{block.text}</Typography>;
       case 'code':
         return (
-          <Box sx={{
+          <Box sx={{ 
             backgroundColor: isDarkMode ? '#2d2d2d' : '#f5f5f5',
             p: 2,
             borderRadius: 1,
@@ -960,7 +755,7 @@ const Blogs = () => {
         );
       case 'quote':
         return (
-          <Box sx={{
+          <Box sx={{ 
             borderLeft: 4,
             borderColor: 'primary.main',
             pl: 2,
@@ -974,24 +769,15 @@ const Blogs = () => {
     }
   };
 
-  const displayBlogs = filteredBlogs
-    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
-
   if (loading) return (
-    <Box sx={{ display: 'flex', justifyContent: 'center', p: 3 }}>
-      <CircularProgress />
+    <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+      <Typography>Loading...</Typography>
     </Box>
   );
 
   if (error) return (
-    <Box sx={{ p: 3, textAlign: 'center', color: 'error.main' }}>
-      <Typography>{error}</Typography>
-    </Box>
-  );
-
-  if (!blogs || blogs.length === 0) return (
-    <Box sx={{ p: 3, textAlign: 'center' }}>
-      <Typography>No blogs found</Typography>
+    <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+      <Typography color="error">{error}</Typography>
     </Box>
   );
 
@@ -1031,8 +817,8 @@ const Blogs = () => {
         <Grid item md={12} xs={12} sm={12} lg={12}>
           <Box sx={{ mb: 4, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-              <BookmarkIcon
-                sx={{
+              <BookmarkIcon 
+                sx={{ 
                   fontSize: '2rem',
                   color: isDarkMode ? '#d9764a' : '#2b5a9e',
                   animation: 'float 3s ease-in-out infinite',
@@ -1040,7 +826,7 @@ const Blogs = () => {
                     '0%, 100%': { transform: 'translateY(0)' },
                     '50%': { transform: 'translateY(-10px)' },
                   }
-                }}
+                }} 
               />
               <Typography variant="h4" sx={{
                 color: isDarkMode ? '#fff' : '#19234d',
@@ -1063,7 +849,7 @@ const Blogs = () => {
             <CreateButton
               isDarkMode={isDarkMode}
               startIcon={<AddIcon />}
-              onClick={handleCreateBlog}
+              onClick={handleCreate}
               endIcon={<TipIcon sx={{ animation: 'pulse 2s infinite' }} />}
             >
               Create New Blog
@@ -1081,7 +867,7 @@ const Blogs = () => {
             InputProps={{
               startAdornment: (
                 <InputAdornment position="start">
-                  <SearchIcon sx={{
+                  <SearchIcon sx={{ 
                     color: isDarkMode ? '#d9764a' : '#2b5a9e',
                     fontSize: '1.5rem',
                     animation: 'bounce 1s infinite',
@@ -1103,7 +889,7 @@ const Blogs = () => {
               onClick={() => setSelectedCategory('all')}
               sx={{
                 borderRadius: '20px',
-                background: selectedCategory === 'all'
+                background: selectedCategory === 'all' 
                   ? (isDarkMode ? '#d9764a' : '#2b5a9e')
                   : 'transparent',
                 '&:hover': {
@@ -1123,7 +909,7 @@ const Blogs = () => {
                 startIcon={<CategoryIcon />}
                 sx={{
                   borderRadius: '20px',
-                  background: selectedCategory === category
+                  background: selectedCategory === category 
                     ? (isDarkMode ? '#d9764a' : '#2b5a9e')
                     : 'transparent',
                   '&:hover': {
@@ -1141,26 +927,26 @@ const Blogs = () => {
 
         <Grid item md={12} xs={12} sm={12} lg={12}>
           <Grid container spacing={3}>
-            {(filteredBlogs || [])
+            {filteredBlogs
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-              .map((blog, index) => (
-                <Grid item xs={12} sm={6} md={4} key={blog._id || index}>
+              .map((blog) => (
+                <Grid item xs={12} sm={6} md={4} key={blog._id}>
                   <Card sx={{
                     height: '100%',
                     display: 'flex',
                     flexDirection: 'column',
-                    background: isDarkMode
+                    background: isDarkMode 
                       ? 'linear-gradient(135deg, rgba(25, 35, 77, 0.9) 0%, rgba(21, 27, 59, 0.9) 100%)'
                       : 'linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(245, 247, 250, 0.95) 100%)',
                     backdropFilter: 'blur(10px)',
                     borderRadius: '20px',
                     transition: 'all 0.3s ease',
-                    border: isDarkMode
+                    border: isDarkMode 
                       ? '1px solid rgba(255, 255, 255, 0.1)'
                       : '1px solid rgba(0, 0, 0, 0.1)',
                     '&:hover': {
                       transform: 'translateY(-5px)',
-                      boxShadow: isDarkMode
+                      boxShadow: isDarkMode 
                         ? '0 8px 32px rgba(217, 118, 74, 0.2)'
                         : '0 8px 32px rgba(43, 90, 158, 0.2)',
                     }
@@ -1172,7 +958,7 @@ const Blogs = () => {
                           height="200"
                           image={blog.featuredImage}
                           alt={blog.title}
-                          sx={{
+                          sx={{ 
                             borderRadius: '20px 20px 0 0',
                             objectFit: 'cover'
                           }}
@@ -1196,22 +982,22 @@ const Blogs = () => {
                         <Avatar
                           src={blog.authorImage}
                           alt={blog.authorName}
-                          sx={{
-                            width: 40,
+                          sx={{ 
+                            width: 40, 
                             height: 40,
-                            border: isDarkMode
+                            border: isDarkMode 
                               ? '2px solid rgba(217, 118, 74, 0.3)'
                               : '2px solid rgba(43, 90, 158, 0.3)'
                           }}
                         />
                         <Box>
-                          <Typography variant="subtitle2" sx={{
+                          <Typography variant="subtitle2" sx={{ 
                             color: isDarkMode ? '#fff' : '#19234d',
-                            fontWeight: 600
+                            fontWeight: 600 
                           }}>
                             {blog.authorName}
                           </Typography>
-                          <Typography variant="caption" sx={{
+                          <Typography variant="caption" sx={{ 
                             color: isDarkMode ? 'rgba(255,255,255,0.6)' : 'rgba(0,0,0,0.6)'
                           }}>
                             {new Date(blog.createdAt).toLocaleDateString('en-US', {
@@ -1223,7 +1009,7 @@ const Blogs = () => {
                         </Box>
                       </Box>
 
-                      <Typography variant="h6" gutterBottom sx={{
+                      <Typography variant="h6" gutterBottom sx={{ 
                         color: isDarkMode ? '#fff' : '#19234d',
                         fontWeight: 700,
                         fontSize: '1.2rem',
@@ -1239,7 +1025,7 @@ const Blogs = () => {
                       </Typography>
 
                       <Box sx={{ mb: 2 }}>
-                        <Typography variant="subtitle2" sx={{
+                        <Typography variant="subtitle2" sx={{ 
                           color: isDarkMode ? '#fff' : '#19234d',
                           mb: 1,
                           fontWeight: 600,
@@ -1279,7 +1065,7 @@ const Blogs = () => {
                               />
                             ))
                           ) : (
-                            <Typography variant="caption" sx={{
+                            <Typography variant="caption" sx={{ 
                               color: isDarkMode ? 'rgba(255,255,255,0.6)' : 'rgba(0,0,0,0.6)',
                               fontStyle: 'italic'
                             }}>
@@ -1307,7 +1093,7 @@ const Blogs = () => {
                           size="small"
                           isDarkMode={isDarkMode}
                           sx={{
-                            background: blog.status === 'Published'
+                            background: blog.status === 'Published' 
                               ? (isDarkMode ? 'rgba(46, 125, 50, 0.2)' : 'rgba(46, 125, 50, 0.1)')
                               : (isDarkMode ? 'rgba(237, 108, 2, 0.2)' : 'rgba(237, 108, 2, 0.1)'),
                             color: blog.status === 'Published'
@@ -1318,20 +1104,20 @@ const Blogs = () => {
                       </Box>
                     </CardContent>
 
-                    <CardActions sx={{
-                      justifyContent: 'flex-end',
-                      p: 2,
-                      borderTop: isDarkMode
+                    <CardActions sx={{ 
+                      justifyContent: 'flex-end', 
+                      p: 2, 
+                      borderTop: isDarkMode 
                         ? '1px solid rgba(255, 255, 255, 0.1)'
                         : '1px solid rgba(0, 0, 0, 0.1)'
                     }}>
                       <Tooltip title="Edit">
-                        <IconButton
+                        <IconButton 
                           onClick={() => handleEdit(blog)}
-                          sx={{
+                          sx={{ 
                             color: isDarkMode ? '#d9764a' : '#2b5a9e',
                             '&:hover': {
-                              background: isDarkMode
+                              background: isDarkMode 
                                 ? 'rgba(217, 118, 74, 0.1)'
                                 : 'rgba(43, 90, 158, 0.1)'
                             }
@@ -1341,12 +1127,12 @@ const Blogs = () => {
                         </IconButton>
                       </Tooltip>
                       <Tooltip title="Delete">
-                        <IconButton
+                        <IconButton 
                           onClick={() => handleDelete(blog._id)}
-                          sx={{
+                          sx={{ 
                             color: isDarkMode ? '#ff5252' : '#dc3545',
                             '&:hover': {
-                              background: isDarkMode
+                              background: isDarkMode 
                                 ? 'rgba(255, 82, 82, 0.1)'
                                 : 'rgba(220, 53, 69, 0.1)'
                             }
@@ -1362,9 +1148,9 @@ const Blogs = () => {
           </Grid>
         </Grid>
 
-        <Grid item xs={12} sx={{
-          display: 'flex',
-          justifyContent: 'center',
+        <Grid item xs={12} sx={{ 
+          display: 'flex', 
+          justifyContent: 'center', 
           mt: 4,
           mb: 2,
           position: 'relative',
@@ -1377,14 +1163,14 @@ const Blogs = () => {
             width: '100%',
             maxWidth: '500px',
             height: '1px',
-            background: isDarkMode
+            background: isDarkMode 
               ? 'linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent)'
               : 'linear-gradient(90deg, transparent, rgba(0,0,0,0.1), transparent)',
             zIndex: 0
           }
         }}>
-          <Box sx={{
-            background: isDarkMode
+          <Box sx={{ 
+            background: isDarkMode 
               ? 'linear-gradient(135deg, rgba(25, 35, 77, 0.95) 0%, rgba(21, 27, 59, 0.95) 100%)'
               : 'linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(245, 247, 250, 0.95) 100%)',
             padding: '8px 16px',
@@ -1556,227 +1342,10 @@ const Blogs = () => {
             </Grid>
 
             <Grid item xs={12}>
-              <StyledTextField
-                fullWidth
-                label="Image Alt Text"
-                value={formData.imageAltText || ''}
-                onChange={(e) => setFormData({ ...formData, imageAltText: e.target.value })}
-                isDarkMode={isDarkMode}
-              />
-            </Grid>
-
-            <Grid item xs={12}>
-              <StyledTextField
-                fullWidth
-                label="Live Page URL"
-                value={formData.livePageUrl || ''}
-                onChange={(e) => setFormData({ ...formData, livePageUrl: e.target.value })}
-                isDarkMode={isDarkMode}
-              />
-            </Grid>
-
-            <Grid item xs={12}>
-              <StyledTextField
-                fullWidth
-                label="Audio URL"
-                value={formData.audio || ''}
-                onChange={(e) => setFormData({ ...formData, audio: e.target.value })}
-                isDarkMode={isDarkMode}
-              />
-            </Grid>
-
-            <Grid item xs={12}>
-              <FormControlLabel
-                control={
-                  <Switch
-                    checked={formData.topViewed}
-                    onChange={(e) => setFormData({ ...formData, topViewed: e.target.checked })}
-                  />
-                }
-                label="Top Viewed"
-              />
-            </Grid>
-
-            <Grid item xs={12}>
-              <FormControlLabel
-                control={
-                  <Switch
-                    checked={formData.recentlyPublished}
-                    onChange={(e) => setFormData({ ...formData, recentlyPublished: e.target.checked })}
-                  />
-                }
-                label="Recently Published"
-              />
-            </Grid>
-
-            <Grid item xs={12}>
-              <StyledTextField
-                select
-                fullWidth
-                label="TOC Based On"
-                value={formData.tocBasedOn}
-                onChange={(e) => setFormData({ ...formData, tocBasedOn: e.target.value })}
-                isDarkMode={isDarkMode}
-              >
-                <MenuItem value="heading">Heading</MenuItem>
-                <MenuItem value="custom">Custom</MenuItem>
-              </StyledTextField>
-            </Grid>
-
-            <Grid item xs={12}>
-              <StyledTextField
-                fullWidth
-                label="Breadcrumb (comma-separated)"
-                value={Array.isArray(formData.breadcrumb) ? formData.breadcrumb.join(', ') : ''}
-                onChange={(e) => setFormData({
-                  ...formData,
-                  breadcrumb: e.target.value.split(',').map(item => item.trim()).filter(Boolean)
-                })}
-                isDarkMode={isDarkMode}
-              />
-            </Grid>
-
-            <Grid item xs={12}>
-              <Typography variant="subtitle1" sx={{
+              <Typography variant="subtitle1" sx={{ 
                 mb: 1,
                 color: isDarkMode ? '#fff' : '#19234d',
-                fontWeight: 500
-              }}>
-                Bread Crumb
-              </Typography>
-              <StyledTextField
-                fullWidth
-                placeholder="Add bread crumb (press Enter or comma to add)"
-                value={formData.currentBreadCrumb || ''}
-                onChange={(e) => {
-                  const value = e.target.value;
-                  if (value.includes(',')) {
-                    const newBreadCrumbs = value.split(',')
-                      .map(breadcrumb => cleanTag(breadcrumb))
-                      .filter(breadcrumb => breadcrumb && !formData.breadcrumb.includes(breadcrumb));
-
-                    setFormData({
-                      ...formData,
-                      currentBreadCrumb: '',
-                      breadcrumb: [...formData.breadcrumb, ...newBreadCrumbs]
-                    });
-                  } else {
-                    setFormData({
-                      ...formData,
-                      currentBreadCrumb: value
-                    });
-                  }
-                }}
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter' && formData.currentBreadCrumb.trim()) {
-                    e.preventDefault();
-                    const newBreadCrumbs = formData.currentBreadCrumb.trim();
-                    if (!formData.breadcrumb.includes(newBreadCrumbs)) {
-                      setFormData({
-                        ...formData,
-                        currentBreadCrumb: '',
-                        breadcrumb: [...formData.breadcrumb, newBreadCrumbs]
-                      });
-                    }
-                  }
-                }}
-                isDarkMode={isDarkMode}
-                sx={{ mb: 1 }}
-              />
-              <StyledChipContainer isDarkMode={isDarkMode}>
-                {Array.isArray(formData.breadcrumb) && formData.breadcrumb.map((breadcrumb, index) => (
-                  <StyledTagChip
-                    key={index}
-                    label={cleanTag(breadcrumb)}
-                    variant="primary"
-                    size="small"
-                    isDarkMode={isDarkMode}
-                    onDelete={() => {
-                      setFormData({
-                        ...formData,
-                        breadcrumb: formData.breadcrumb.filter((_, i) => i !== index)
-                      });
-                    }}
-                  />
-                ))}
-              </StyledChipContainer>
-            </Grid>
-
-            {/* <Grid item xs={12}>
-              <Typography variant="h6" gutterBottom>
-                Featured Sections
-              </Typography>
-              {(formData?.featuredSections || []).map((section, index) => (
-                <FeaturedSection
-                  key={index}
-                  section={section}
-                  index={index}
-                  onChange={(idx, newSection) => {
-                    const newSections = [...(formData.featuredSections || [])];
-                    newSections[idx] = newSection;
-                    setFormData({ ...formData, featuredSections: newSections });
-                  }}
-                  onDelete={(idx) => {
-                    setFormData({
-                      ...formData,
-                      featuredSections: (formData.featuredSections || []).filter((_, i) => i !== idx)
-                    });
-                  }}
-                  isDarkMode={isDarkMode}
-                />
-              ))}
-              <Button
-                variant="outlined"
-                startIcon={<AddIcon />}
-                onClick={() => setFormData({
-                  ...formData,
-                  featuredSections: [...(formData.featuredSections || []), { heading: '', description: '', image: null }]
-                })}
-              >
-                Add Featured Section
-              </Button>
-            </Grid> */}
-
-            <Grid item xs={12}>
-              <Typography variant="h6" gutterBottom>
-                FAQs
-              </Typography>
-              {(formData?.faqs || []).map((faq, index) => (
-                <FAQSection
-                  key={index}
-                  faq={faq}
-                  index={index}
-                  onChange={(idx, newFAQ) => {
-                    const newFAQs = [...(formData.faqs || [])];
-                    newFAQs[idx] = newFAQ;
-                    setFormData({ ...formData, faqs: newFAQs });
-                  }}
-                  onDelete={(idx) => {
-                    setFormData({
-                      ...formData,
-                      faqs: (formData.faqs || []).filter((_, i) => i !== idx)
-                    });
-                  }}
-                  isDarkMode={isDarkMode}
-                />
-              ))}
-              <Button
-                variant="outlined"
-                startIcon={<AddIcon />}
-                onClick={() => setFormData({
-                  ...formData,
-                  faqs: [...(formData.faqs || []), { question: '', answer: '' }]
-                })}
-              >
-                Add FAQ
-              </Button>
-            </Grid>
-
-            <Grid item xs={12}>
-              <Typography variant="subtitle1" sx={{
-                mb: 1,
-                color: isDarkMode ? '#fff' : '#19234d',
-                fontWeight: 500
+                fontWeight: 500 
               }}>
                 Tags
               </Typography>
@@ -1790,15 +1359,15 @@ const Blogs = () => {
                     const newTags = value.split(',')
                       .map(tag => cleanTag(tag))
                       .filter(tag => tag && !formData.tags.includes(tag));
-
+                    
                     setFormData({
                       ...formData,
                       currentTag: '',
                       tags: [...formData.tags, ...newTags]
                     });
                   } else {
-                    setFormData({
-                      ...formData,
+                    setFormData({ 
+                      ...formData, 
                       currentTag: value
                     });
                   }
@@ -1867,10 +1436,10 @@ const Blogs = () => {
                 </Button>
                 {authorImagePreview && (
                   <Box sx={{ mt: 2 }}>
-                    <img
-                      src={authorImagePreview}
-                      alt="Author preview"
-                      style={{ maxWidth: '100%', maxHeight: '100px' }}
+                    <img 
+                      src={authorImagePreview} 
+                      alt="Author preview" 
+                      style={{ maxWidth: '100%', maxHeight: '100px' }} 
                     />
                   </Box>
                 )}
@@ -1894,10 +1463,10 @@ const Blogs = () => {
                 </Button>
                 {featuredImagePreview && (
                   <Box sx={{ mt: 2 }}>
-                    <img
-                      src={featuredImagePreview}
-                      alt="Featured preview"
-                      style={{ maxWidth: '100%', maxHeight: '100px' }}
+                    <img 
+                      src={featuredImagePreview} 
+                      alt="Featured preview" 
+                      style={{ maxWidth: '100%', maxHeight: '100px' }} 
                     />
                   </Box>
                 )}
@@ -1927,7 +1496,7 @@ const Blogs = () => {
                   />
                 ))}
               </Box>
-
+              
               <Button
                 variant="contained"
                 onClick={() => {
@@ -1945,8 +1514,8 @@ const Blogs = () => {
               <Typography variant="subtitle1" gutterBottom>
                 Content Preview
               </Typography>
-              <Box sx={{
-                p: 2,
+              <Box sx={{ 
+                p: 2, 
                 border: '1px solid',
                 borderColor: 'divider',
                 borderRadius: 1,
@@ -2013,10 +1582,10 @@ const Blogs = () => {
             </Grid>
 
             <Grid item xs={12}>
-              <Typography variant="subtitle1" sx={{
+              <Typography variant="subtitle1" sx={{ 
                 mb: 1,
                 color: isDarkMode ? '#fff' : '#19234d',
-                fontWeight: 500
+                fontWeight: 500 
               }}>
                 SEO Keywords
               </Typography>
@@ -2030,7 +1599,7 @@ const Blogs = () => {
                     const newKeywords = value.split(',')
                       .map(keyword => keyword.trim())
                       .filter(keyword => keyword && !formData.seoMetadata.keywords.includes(keyword));
-
+                    
                     setFormData({
                       ...formData,
                       currentKeyword: '',
