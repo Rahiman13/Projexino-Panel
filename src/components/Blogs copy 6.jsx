@@ -43,7 +43,6 @@ import {
   LastPage as LastPageIcon,
   LocalOffer as TagIcon,
   Lightbulb as TipIcon,
-  Visibility as ViewIcon,
 } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
 import { useTheme } from '../context/ThemeContext';
@@ -705,19 +704,6 @@ const Blogs = () => {
     setOpenDialog(true);
   };
 
-  // View a blog
-  const handleView = (blog) => {
-    // Check if livePageUrl exists and is not empty
-    if (blog.livePageUrl) {
-      window.open(`https://projexino.com/blogs/${blog.livePageUrl}`, '_blank');
-      
-    } else {
-      // Fallback to constructing URL with slug
-      window.open(blog.livePageUrl, '_blank');
-    }
-  };
-
-
   const handleCreateBlog = () => {
     setIsEditing(false);
     setFormData({
@@ -1339,21 +1325,6 @@ const Blogs = () => {
                         ? '1px solid rgba(255, 255, 255, 0.1)'
                         : '1px solid rgba(0, 0, 0, 0.1)'
                     }}>
-                      <Tooltip title="View">
-                        <IconButton
-                          onClick={() => handleView(blog)}
-                          sx={{
-                            color: isDarkMode ? '#d9764a' : '#2b5a9e',
-                            '&:hover': {
-                              background: isDarkMode
-                                ? 'rgba(217, 118, 74, 0.1)'
-                                : 'rgba(43, 90, 158, 0.1)'
-                            }
-                          }}
-                        >
-                          <ViewIcon />
-                        </IconButton>
-                      </Tooltip>
                       <Tooltip title="Edit">
                         <IconButton
                           onClick={() => handleEdit(blog)}
